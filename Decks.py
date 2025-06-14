@@ -79,7 +79,8 @@ with st.sidebar:
     code = st.selectbox('Методика расчёта', ['СП 260.1325800.2023','EN 1993-1-3:2005'], index = 0, label_visibility = 'visible', disabled = True) # Выбор норм для расчёта
     Q_en = False #st.checkbox('Несущую способность по поперечной силе определять по EN 1993-1-3', value=True, label_visibility = 'visible', disabled = False) #Выбор формулы для определения несущей способность при действии поперечной силы
     standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = True) #Выбор стандарта на настил
-
+    
+    st.subheader('Настройки расчёта')
     with st.expander('Единицы измерения', expanded=False):
         U_Dimensions = st.selectbox('Размеры сечений', ['мм', 'см', 'м'], index=0, label_visibility='visible', disabled=False)
         U_SectionProperties = st.selectbox('Свойства сечений',['ммⁿ', 'смⁿ', 'мⁿ'], index=1, label_visibility='visible', disabled=False)
@@ -139,6 +140,17 @@ with st.sidebar:
         'кгс/см²': 0.0000101971621
     }
     UF_Stress = UD_Stress.get(U_Stress, 0.0)
+
+    precision = st.selectbox('Точность', ['0', '0.0', '0.00', '0.000', '0.0000', 'И зачем?'], index=2, label_visibility='visible', disabled=False)
+    precision_dict = {
+        '0': 0,
+        '0.0': 1,
+        '0.00': 2,
+        '0.000': 3,
+        '0.0000': 4,
+        'И зачем?': 17}
+    
+    precision_value = precision_dict.get(precision,17)
 
     st.subheader('Расчетная схема') # Заголовок страницы
     if standard == 'ГОСТ 24045-2016':
@@ -1043,8 +1055,8 @@ def draw_section():
     
     # Настройки графика
     fig.update_layout(
-        xaxis=dict(showgrid=True, zeroline=True, mirror=True, ticks='outside', range=[-b * UF_Dimensions / 2, b * UF_Dimensions / 2], side='bottom'),
-        yaxis=dict(scaleanchor="x", scaleratio=1, range=[0, h * UF_Dimensions], zeroline=True, mirror=True, ticks='outside', side='left'),
+        xaxis=dict(showgrid=True, zeroline=True, mirror=True, ticks='outside', range=[-b * UF_Dimensions / 2, b * UF_Dimensions / 2], side='bottom', tickformat=f'.{precision_value}f'),
+        yaxis=dict(scaleanchor="x", scaleratio=1, range=[0, h * UF_Dimensions], zeroline=True, mirror=True, ticks='outside', side='left', tickformat=f'.{precision_value}f'),
         xaxis2=dict(overlaying='x', side='top', ticks='outside', mirror=True),
         yaxis2=dict(overlaying='y', side='right', ticks='outside', mirror=True),
         showlegend=False, template='plotly_dark')
@@ -1077,8 +1089,8 @@ def draw_capasity_contour():
         showlegend=False, name = 'def='+f'{F_ed:.2f} мм')) 
 
     fig.update_layout(
-        xaxis=dict(title='Поперечная сила', showgrid=True, range=[0.0, 1.05 * Q_ult * UF_Forces / UD_Forces.get('кН',0)]),
-        yaxis=dict(title='Момент x-x', showgrid=True, range=[0.0, 1.05 * M_ult * UF_Moments / UD_Moments.get('кН·м', 0)]),
+        xaxis=dict(title='Поперечная сила', showgrid=True, range=[0.0, 1.05 * Q_ult * UF_Forces / UD_Forces.get('кН',0)], tickformat=f'.{precision_value}f'),
+        yaxis=dict(title='Момент x-x', showgrid=True, range=[0.0, 1.05 * M_ult * UF_Moments / UD_Moments.get('кН·м', 0)], tickformat=f'.{precision_value}f'),
         showlegend=False, height = 1000, template='plotly_dark')
 
     return fig
@@ -1090,15 +1102,15 @@ with col_l:
     st.plotly_chart(draw_section())
 
     st.subheader('Геометрические характеристики полного сечения', divider = 'gray')
-    st.latex('t_{cor}='+f'{t * UF_Dimensions:.4f}' +'\;' + '\;\;\;\;'+'I_{x.ini}='+f'{I_ini * UF_SectionProperties**4:.2f}')
-    st.latex('W_{x.ini.wf}='+f'{W_ini_wf * UF_SectionProperties**3:.2f}' +'\;' + '\;\;\;\;' + 'W_{x.ini.tf}='+f'{W_ini_tf * UF_SectionProperties**3:.2f}')
+    st.latex('t_{cor}='+f'{t * UF_Dimensions:.{precision_value}f}' +'\;' + '\;\;\;\;'+'I_{x.ini}='+f'{I_ini * UF_SectionProperties**4:.{precision_value}f}')
+    st.latex('W_{x.ini.wf}='+f'{W_ini_wf * UF_SectionProperties**3:.{precision_value}f}' +'\;' + '\;\;\;\;' + 'W_{x.ini.tf}='+f'{W_ini_tf * UF_SectionProperties**3:.{precision_value}f}')
     
     st.subheader('Геометрические характеристики редуцированного сечения', divider = 'gray')       
-    st.latex('t_{red.f}='+f'{t_red_f * UF_Dimensions:.4f}' +'\;' + '\;\;\;\;' + 't_{red.w}='+f'{t_red_w * UF_Dimensions:.4f}' +'\;' + '\;\;\;\;' + 'I_{x.red}='+f'{I_red * UF_SectionProperties**4:.2f}')
-    st.latex('W_{x.red.wf}='+f'{W_red_wf * UF_SectionProperties**3:.2f}' +'\;' + '\;\;\;\;' + 'W_{x.red.wf}='+f'{W_red_tf * UF_SectionProperties**3:.2f}')
+    st.latex('t_{red.f}='+f'{t_red_f * UF_Dimensions:.{precision_value}f}' +'\;' + '\;\;\;\;' + 't_{red.w}='+f'{t_red_w * UF_Dimensions:.{precision_value}f}' +'\;' + '\;\;\;\;' + 'I_{x.red}='+f'{I_red * UF_SectionProperties**4:.{precision_value}f}')
+    st.latex('W_{x.red.wf}='+f'{W_red_wf * UF_SectionProperties**3:.2f}' +'\;' + '\;\;\;\;' + 'W_{x.red.wf}='+f'{W_red_tf * UF_SectionProperties**3:.{precision_value}f}')
     k_q_output = UF_Forces / UD_Forces.get('кН',0)
     k_m_output = UF_Moments / UD_Moments.get('кН·м', 0)
-    st.latex('M_{ult}='+f'{min(M_ult_wf, M_ult_tf) * k_m_output:.2f}' + '\;' + '\;\;\;\;' + 'Q_{ult}='+f'{Q_ult * k_q_output:.2f}')
+    st.latex('M_{ult}='+f'{min(M_ult_wf, M_ult_tf) * k_m_output:.{precision_value}f}' + '\;' + '\;\;\;\;' + 'Q_{ult}='+f'{Q_ult * k_q_output:.{precision_value}f}')
 
 with col_r:
     st.header('Область прочности', divider = 'gray')
