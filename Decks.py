@@ -7,28 +7,14 @@ import plotly.graph_objects as go
 # Настройка страницы для широкого режима
 st.set_page_config(
     page_title='PLAY Deck',
+    page_icon='P',
     initial_sidebar_state='expanded',
     layout='wide',
     menu_items={
-        'Help': 'https://playcad.pro/help',
+        'Get help': 'https://playcad.pro/help',
         'Report a bug': 'https://forms.yandex.ru/cloud/66c8846bf47e7330d8e212a7/',
-        'About': 'Это приложение чать проекта PlayCAD. v.0.5'}
+        'About': 'Это приложение часть проекта PlayCAD. v.0.5'}
 )
-
-# Кастомный CSS для полного растяжения
-st.markdown(
-    '''
-    <style>
-        .reportview-container .main .block-container{
-            max-width: 100%;
-            padding-top: 2rem;
-            padding-right: 5rem;
-            padding-left: 5rem;
-            padding-bottom: 2rem;}
-        .sidebar .sidebar-content {
-            width: 300px;}
-    </style>
-    ''', unsafe_allow_html=True)
 
 # Справочные данные
 Grades = {
@@ -39,7 +25,31 @@ Grades = {
     350: {'R_y': 330, 'R_s': 190, 'R_lp': 200},
     390: {'R_y': 370, 'R_s': 215, 'R_lp': 210},
     420: {'R_y': 400, 'R_s': 230, 'R_lp': 225},
-    450: {'R_y': 425, 'R_s': 245, 'R_lp': 240}}
+    450: {'R_y': 425, 'R_s': 245, 'R_lp': 240}
+}
+
+C_coef = {
+    'Закреплённая на опоре': {
+        'На одну полку': {
+            'Концевая': {'C': 3, 'C_r': 0.08, 'C_b': 0.70, 'C_h': 0.055},
+            'Промежуточная': {'C': 8, 'C_r': 0.10, 'C_b': 0.17, 'C_h': 0.004}
+        },
+        'На две полки': {
+            'Концевая': {'C': 9, 'C_r': 0.12, 'C_b': 0.14, 'C_h': 0.040},
+            'Промежуточная': {'C': 10, 'C_r': 0.11, 'C_b': 0.21, 'C_h': 0.020}
+        }
+    },
+    'Не закреплённая на опоре': {
+        'На одну полку': {
+            'Концевая': {'C': 3, 'C_r': 0.08, 'C_b': 0.70, 'C_h': 0.055},
+            'Промежуточная': {'C': 8, 'C_r': 0.10, 'C_b': 0.17, 'C_h': 0.004}
+        },
+    'На две полки': {
+        'Концевая': {'C': 6, 'C_r': 0.16, 'C_b': 0.17, 'C_h': 0.050},
+        'Промежуточная': {'C': 17, 'C_r': 0.10, 'C_b': 0.10, 'C_h': 0.046}
+        }
+    }
+}
 
 Decks_GOST24045_2016 = {
     'Н57-750': {'h': 57, 'b': 187.5, 'b_wf': 93, 'b_tf': 44, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 0, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 0, 'h_1': 57, 'h_s1': 0, 'h_2': 0, 'h_s2': 0, 'r': 5, 'r_s': 4, 'n_cor': 4},
@@ -47,7 +57,8 @@ Decks_GOST24045_2016 = {
     'Н75-750': {'h': 75, 'b': 187.5, 'b_wf': 92, 'b_tf': 50, 'n_wfs' : 1, 'n_tfs': 0, 'n_ws': 1, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 8, 'h_1': 48, 'h_s1': 7, 'h_2': 0, 'h_s2':0, 'r': 5, 'r_s': 4, 'n_cor': 4},
     'Н114-600': {'h': 114, 'b': 200.0, 'b_wf': 104, 'b_tf': 60, 'n_wfs': 1, 'n_tfs': 1, 'n_ws': 1, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 22, 'h_tfs': 7, 'h_ws': 8, 'h_1': 81, 'h_s1': 7, 'h_2': 0, 'h_s2': 0, 'r': 5, 'r_s': 4, 'n_cor': 3},
     'Н114-750': {'h': 114, 'b': 250.0, 'b_wf': 126, 'b_tf': 80, 'n_wfs': 2, 'n_tfs': 1, 'n_ws': 1, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 42, 'b_tfs': 22, 'h_tfs': 7, 'h_ws': 8, 'h_1': 81, 'h_s1': 7, 'h_2': 0, 'h_s2': 0, 'r': 5, 'r_s': 4, 'n_cor': 3},
-    'Н153-850': {'h': 153, 'b': 284.0, 'b_wf': 120, 'b_tf': 43, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 7, 'h_1': 30, 'h_s1': 11, 'h_2': 71, 'h_s2': 11, 'r': 3, 'r_s': 3, 'n_cor': 3}}
+    'Н153-850': {'h': 153, 'b': 284.0, 'b_wf': 120, 'b_tf': 43, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 7, 'h_1': 30, 'h_s1': 11, 'h_2': 71, 'h_s2': 11, 'r': 3, 'r_s': 3, 'n_cor': 3}
+}
 
 Decks_STO_57398459_18_2024 = {
     'Н57-750': {'h': 57, 'b': 187.5, 'b_wf': 95, 'b_tf': 44, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 0, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 0, 'h_1': 57, 'h_s1': 0, 'h_2': 0, 'h_s2': 0, 'r': 5, 'r_s': 4, 'n_cor': 4},
@@ -60,7 +71,8 @@ Decks_STO_57398459_18_2024 = {
     'Н135-1000': {'h': 135, 'b': 333.3, 'b_wf': 160, 'b_tf': 54, 'n_wfs': 2, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 61, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 5, 'h_1': 19.6, 'h_s1': 12.9, 'h_2': 70, 'h_s2': 12.9, 'r': 5, 'r_s': 4, 'n_cor': 3},  
     'Н144-960': {'h': 144, 'b': 320.0, 'b_wf': 124.4, 'b_tf': 60.2, 'n_wfs': 2, 'n_tfs': 1, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 50, 'b_tfs': 29, 'h_tfs': 5, 'h_ws': 6, 'h_1': 40, 'h_s1': 7.5, 'h_2': 49, 'h_s2': 7.5, 'r': 5, 'r_s': 4, 'n_cor': 3},
     'Н153-900': {'h': 153, 'b': 300.0, 'b_wf': 120.0, 'b_tf': 61.0, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 7, 'h_1': 40, 'h_s1': 9, 'h_2': 63, 'h_s2': 9, 'r': 5, 'r_s': 3.5, 'n_cor': 3},
-    'Н157-800': {'h': 157, 'b': 266.7, 'b_wf': 121.0, 'b_tf': 62.0, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 8.25, 'h_1': 43, 'h_s1': 7.5, 'h_2': 66, 'h_s2': 7.5, 'r': 5, 'r_s': 3.5, 'n_cor': 3}}
+    'Н157-800': {'h': 157, 'b': 266.7, 'b_wf': 121.0, 'b_tf': 62.0, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 8.25, 'h_1': 43, 'h_s1': 7.5, 'h_2': 66, 'h_s2': 7.5, 'r': 5, 'r_s': 3.5, 'n_cor': 3}
+}
 
 with st.sidebar:
     st.subheader('Нормы')
@@ -68,57 +80,101 @@ with st.sidebar:
     Q_en = False #st.checkbox('Несущую способность по поперечной силе определять по EN 1993-1-3', value=True, label_visibility = 'visible', disabled = False) #Выбор формулы для определения несущей способность при действии поперечной силы
     standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = True) #Выбор стандарта на настил
 
+    with st.expander('Единицы измерения', expanded=False):
+        U_Dimensions = st.selectbox('Размеры сечений', ['мм', 'см', 'м'], index=0, label_visibility='visible', disabled=False)
+        U_SectionProperties = st.selectbox('Свойства сечений',['ммⁿ', 'смⁿ', 'мⁿ'], index=1, label_visibility='visible', disabled=False)
+        U_Load_Area = st.selectbox('Нагрузки',['Па', 'кПа', 'кгс/м²', 'тс/м²'], index = 1, label_visibility='visible', disabled=False)
+        U_Force = st.selectbox('Силы',['Н', 'кН', 'кгс', 'тс'], index=1, label_visibility='visible', disabled=False)
+        U_Moments = st.selectbox('Моменты', ['Н·мм','Н·см', 'Н·м', 'кН·мм', 'кН·см', 'кН·м', 'кгс·мм', 'кгс·см', 'кгс·м', 'тс·мм','тс·см', 'тс·м'], index=5, label_visibility='visible', disabled=False)
+        U_Stress = st.selectbox('Напряжения', ['Па', 'кПа', 'МПа', 'кН/см²', 'кгс/cм²'], index=2, label_visibility='visible', disabled=False)
+
+    UD_Dimensions = {
+        'мм': 1000.0,
+        'см': 100.0,
+        'м': 1.0}
+    UF_Dimensions = UD_Dimensions.get(U_Dimensions, 0.0)
+    
+    UD_SectionProperties = {
+        'ммⁿ': 1000.0,
+        'смⁿ': 100.0,
+        'мⁿ': 1.0
+    }
+    UF_SectionProperties = UD_SectionProperties.get(U_SectionProperties, 0.0)
+
+    UD_Forces = {
+        'Н': 1.0,
+        'кН': 0.001,
+        'кгс': 0.101971621,
+        'тс': 0.000101971621}
+    UF_Forces = UD_Forces.get(U_Force, 0.0)
+
+    UD_Load_Area = {
+        'Па': 1.0,
+        'кПа': 0.001,
+        'кгс/м²': 0.101971621,
+        'тс/м²': 0.000101971621}
+    UF_Load_Area = UD_Load_Area.get(U_Load_Area, 0.0)
+
+    UD_Moments = {
+        'Н·мм': 1000.0,
+        'Н·см': 100.0,
+        'Н·м': 1.0,
+        'кН·мм': 1.0,
+        'кН·см': 0.1,
+        'кН·м': 0.001,
+        'кгс·мм': 101.971621,
+        'кгс·см': 10.1971621,
+        'кгс·м': 0.101971621,
+        'тс·мм': 0.101971621,
+        'тс·см': 0.0101971621,
+        'тс·м': 0.000101971621
+    }
+    UF_Moments = UD_Moments.get(U_Moments, 0.0)
+
+    UD_Stress = {
+        'Па': 1.0,
+        'кПа': 0.001,
+        'МПа': 0.000001,
+        'кН/см²': 0.0000001,
+        'кгс/см²': 0.0000101971621
+    }
+    UF_Stress = UD_Stress.get(U_Stress, 0.0)
+
     st.subheader('Расчетная схема') # Заголовок страницы
     if standard == 'ГОСТ 24045-2016':
         deck = st.selectbox('Настил', ['Н57-750', 'Н60-845', 'Н75-750','Н114-600', 'Н114-750', 'Н153-850'], index = 5, label_visibility = 'visible', disabled = False) #Настилы по ГОСТ 24045-2016
     elif standard == 'СТО 57398459-18-2024':
         deck = st.selectbox('Настил', ['Н57-750','Н60-845','Н75-750','Н105-1270','Н114-600','Н114-750','Н127-1100','Н135-1000','Н144-960','Н153-900','Н157-800'], index = 0, label_visibility = 'visible', disabled = False)
     grade = int(st.selectbox('Марка стали листа по ГОСТ 14918-2020', ('220', '250', '280', '320', '350', '390', '420', '450'))) # Класс прочности стали
-    t_nom = float(st.slider('Номинальная толщина стенки', min_value=0.60, max_value=1.5, value=0.80, step=0.05, format='%.2f'))/1000 # Номинальная толщина стенки
+    t_nom = float(st.slider('Номинальная толщина стенки', min_value=0.00060 * UF_Dimensions, max_value=0.0015 * UF_Dimensions, value=0.00080 * UF_Dimensions, step=0.00005 * UF_Dimensions, format='%.2f')) * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Номинальная толщина стенки
     t_coat = float(st.slider('Класс покрытия', min_value=60.0, max_value=430.0, value=350.0, step=5.0, format='%f')) * (7/100) / 1000000 # Толщина защитного покрытия
     orient = st.selectbox('Сжатая полка', ('Широкая','Узкая'),) # Ориентация широких полок
 
     if Q_en == False:
         st.subheader('Условия опирания')
-        Q_1 = st.selectbox('Конструкция опоры и полок', ['Закреплённая на опоре', 'Не закреплённая на опоре'], index = 0, label_visibility = 'visible')
-        Q_2 = st.selectbox('Опорная реакция или локальная нагрузка', ['На одну полку','На две полки'], index = 0, label_visibility = 'visible')
-        Q_3 = st.selectbox('Опора', ['Концевая','Промежуточная'], index=1, label_visibility='visible')
-        if Q_1 == 'Закреплённая на опоре':
-            if Q_2 == 'На одну полку':
-                if Q_3 == 'Концевая':
-                    C, C_r, C_b, C_h = 3, 0.08, 0.70, 0.055
-                elif Q_3 == 'Промежуточная':
-                    C, C_r, C_b, C_h = 8, 0.10, 0.17, 0.004
-            elif Q_2 == 'На две полки':
-                if Q_3 == 'Концевая':
-                    C, C_r, C_b, C_h = 9, 0.12, 0.14, 0.040
-                elif Q_3 == 'Промежуточная':
-                    C, C_r, C_b, C_h = 10, 0.11, 0.21, 0.020
-        elif Q_1 == 'Не закреплённая на опоре':
-            if Q_2 == 'На одну полку':
-                if Q_3 == 'Концевая':
-                    C, C_r, C_b, C_h = 3, 0.08, 0.70, 0.055
-                elif Q_3 == 'Промежуточная':
-                    C, C_r, C_b, C_h = 8, 0.10, 0.17, 0.004
-            elif Q_2 == 'На две полки':
-                if Q_3 == 'Концевая':
-                    C, C_r, C_b, C_h = 6, 0.16, 0.17, 0.050
-                elif Q_3 == 'Промежуточная':
-                    C, C_r, C_b, C_h = 17, 0.10, 0.10, 0.046                            
-    l_a = float(st.slider('Ширина опоры', min_value=50.0, max_value=200.0, value=100.0, step=1.0, format='%f'))/1000 # Ширина опоры
+        Q_parameter_1 = st.selectbox('Конструкция опоры и полок', ['Закреплённая на опоре', 'Не закреплённая на опоре'], index = 0, label_visibility = 'visible')
+        Q_parameter_2 = st.selectbox('Опорная реакция или локальная нагрузка', ['На одну полку','На две полки'], index = 0, label_visibility = 'visible')
+        Q_parameter_3 = st.selectbox('Опора', ['Концевая','Промежуточная'], index=1, label_visibility='visible')
+
+        C=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C',0)
+        C_r=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_r',0)
+        C_b=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_b',0)
+        C_h=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_h',0)
+
+    l_a = float(st.slider('Ширина опоры', min_value=0.05 * UF_Dimensions, max_value=0.2 * UF_Dimensions, value=0.1 * UF_Dimensions, step=0.001 * UF_Dimensions, format='%f')) * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Ширина опоры
 
     st.header('Рассчётные усилия')
     number_spans = st.slider('Количество пролётов', min_value=1, max_value=5, value=3)
     span = st.number_input('Пролёт', min_value=0.0, max_value=12.0, value=3.0, step=0.01)
-    load = st.number_input('Нагрузка', min_value=0.0, max_value=10.0, value=1.0, step=0.01)
+    load = st.number_input('Нагрузка', min_value=0.0 * UF_Load_Area, max_value=10000.0 * UF_Load_Area, value=1000.0 * UF_Load_Area, step=1.0 * UF_Load_Area) * UD_Load_Area.get('кПа',0.0) / UF_Load_Area
 
 # Расчётные характеристики материалов 
-ρ_s = 7850 # Плотность стали
-E_s = 206000 # Модуль упругости стали
+ρ_s = 7850 # Плотность стали [кг/м³]
+E_s = 206000 # Модуль упругости стали [МПа]
 ν = 0.3 # Коэффициент поперечной деформации стали
-R_y = Grades.get(grade, {}).get('R_y',0) # Расчётный предел текучести стали при растяжении, сжатии и изгибе
-R_s = Grades.get(grade, {}).get('R_s',0) # Расчётный предел текучести стали на сдвиг
-R_lp = Grades.get(grade, {}).get('R_lp',0) # Расчётный предел прочности стали на смятие
+R_y = Grades.get(grade, {}).get('R_y', 0) # Расчётный предел текучести стали при растяжении, сжатии и изгибе [МПа]
+R_s = Grades.get(grade, {}).get('R_s', 0) # Расчётный предел текучести стали на сдвиг [МПа]
+R_lp = Grades.get(grade, {}).get('R_lp', 0) # Расчётный предел прочности стали на смятие [МПа]
 t = t_nom - 2 * t_coat # Расчётная толщина листа
 
 # Выбор сортамента настилов
@@ -562,7 +618,6 @@ else:
         Q_w_p = C * t**2 * R_y * m.sin(α) * (1 - C_r * m.sqrt(r/t)) * (1 + C_b * m.sqrt(l_a/t)) * (1 - C_h * m.sqrt(h_1/t)) * k_a_s * 1e3
 Q_ult = 2 * Q_w_p * 1/b # Критическая сила на метр поперечного сечения настила
 
-
 # Определение действующих усилий
 factors = {
     1: {'k_m': 0.125, 'k_q': 0.500, 'k_f': 0.01300},
@@ -913,8 +968,8 @@ def draw_section():
     
     # Рисуем основные участки синим
     for segment in main_points:
-        x = [p[0] * 1000 for p in segment]
-        y = [p[1] * 1000 for p in segment]
+        x = [p[0] * UF_Dimensions for p in segment]
+        y = [p[1] * UF_Dimensions for p in segment]
         
         # Основной сегмент
         fig.add_trace(go.Scatter(x=x, y=y,
@@ -922,7 +977,7 @@ def draw_section():
             showlegend=False, name = 'ini'))
         
         # Зеркальное отражение
-        x_mirror = [-p[0]*1000 for p in segment]
+        x_mirror = [-p[0] * UF_Dimensions for p in segment]
         fig.add_trace(go.Scatter(x=x_mirror, y=y,
             mode='lines', line=dict(color='blue', width=4),
             showlegend=False, name = 'ini'))
@@ -930,30 +985,30 @@ def draw_section():
     # Рисуем редуцированные участки оранжевым
     reduced_color = 'rgb(' + str(int(255 * (1 - χ_d))) + ',' + str(int(0)) + ',' + str(int(255 * χ_d)) + ')'
     for segment in reduced_segments:
-        x = [p[0]*1000 for p in segment]
-        y = [p[1]*1000 for p in segment]
+        x = [p[0] * UF_Dimensions for p in segment]
+        y = [p[1] * UF_Dimensions for p in segment]
         
         fig.add_trace(go.Scatter(x=x, y=y,
             mode='lines', line=dict(color=reduced_color, width=4*χ_d),
             showlegend=False, name = 'red'))
         
         # Зеркальное отражение
-        x_mirror = [-p[0]*1000 for p in segment]
+        x_mirror = [-p[0] * UF_Dimensions for p in segment]
         fig.add_trace(go.Scatter(x=x_mirror, y=y,
             mode='lines', line=dict(color=reduced_color, width=4*χ_d),
             showlegend=False, name = 'red'))
         
     # Рисуем выключенные участки серым
     for segment in inactive_segments:
-        x = [p[0]*1000 for p in segment]
-        y = [p[1]*1000 for p in segment]
+        x = [p[0] * UF_Dimensions for p in segment]
+        y = [p[1] * UF_Dimensions for p in segment]
         
         fig.add_trace(go.Scatter(x=x, y=y,
             mode='lines', line=dict(color='gray', width=2, dash='dash'),
             showlegend=False, name = 'red'))
         
         # Зеркальное отражение
-        x_mirror = [-p[0]*1000 for p in segment]
+        x_mirror = [-p[0] * UF_Dimensions for p in segment]
         fig.add_trace(go.Scatter(x=x_mirror, y=y,
             mode='lines', line=dict(color='gray', width=2, dash='dash'),
             showlegend=False, name = 'red'))
@@ -962,12 +1017,12 @@ def draw_section():
     if orient == 'Широкая':    
         #fig.add_trace(go.Scatter(x=[-b/ 2, b / 2], y=[h - h_ini_c,h - h_ini_c],
             #mode='lines', line=dict(color='blue', width=1, dash='dashdot'), name='ini'))
-        fig.add_trace(go.Scatter(x=[-b * 1000 / 2, b*1000 / 2], y=[(h - h_red_c)*1000,(h - h_red_c)*1000],
+        fig.add_trace(go.Scatter(x=[-b * UF_Dimensions / 2, b * UF_Dimensions / 2], y=[(h - h_red_c) * UF_Dimensions, (h - h_red_c) * UF_Dimensions],
             mode='lines', line=dict(color=reduced_color, width=1, dash='dashdot'), name='red'))
     elif orient == 'Узкая':
         #fig.add_trace(go.Scatter(x=[-b/ 2, b / 2], y=[h_ini_c,h_ini_c],
             #mode='lines', line=dict(color='blue', width=1, dash='dashdot'), name='ini'))
-        fig.add_trace(go.Scatter(x=[-b*1000 / 2, b*1000 / 2], y=[(h - h_red_c)*1000,(h - h_red_c)*1000],
+        fig.add_trace(go.Scatter(x=[-b * UF_Dimensions / 2, b * UF_Dimensions / 2], y=[(h - h_red_c) * UF_Dimensions, (h - h_red_c) * UF_Dimensions],
             mode='lines', line=dict(color=reduced_color, width=1, dash='dashdot'), name='red'))        
     
     # Центр тяжести
@@ -975,21 +1030,21 @@ def draw_section():
         #fig.add_trace(go.Scatter(x=[0], y=[h - h_ini_c],
             #mode='markers', marker=dict(color='blue', size=7.5),
             #showlegend=False, name='ini'))
-        fig.add_trace(go.Scatter(x=[0], y=[(h - h_red_c)*1000],
+        fig.add_trace(go.Scatter(x=[0], y=[(h - h_red_c) * UF_Dimensions],
             mode='markers', marker=dict(color=reduced_color, size=7.5),
             showlegend=False, name='red'))   
     elif orient == 'Узкая':
         #fig.add_trace(go.Scatter(x=[0], y=[h_ini_c],
             #mode='markers', marker=dict(color='blue', size=7.5),
             #showlegend=False, name='ini'))
-        fig.add_trace(go.Scatter(x=[0], y=[(h - h_red_c)*1000],
+        fig.add_trace(go.Scatter(x=[0], y=[(h - h_red_c) * UF_Dimensions],
             mode='markers', marker=dict(color=reduced_color, size=7.5),
             showlegend=False, name='red'))
     
     # Настройки графика
     fig.update_layout(
-        xaxis=dict(showgrid=True, zeroline=True, mirror=True, ticks='outside', range=[-b * 1000/2, b*1000/2], side='bottom'),
-        yaxis=dict(scaleanchor="x", scaleratio=1, range=[0, h*1000], zeroline=True, mirror=True, ticks='outside', side='left'),
+        xaxis=dict(showgrid=True, zeroline=True, mirror=True, ticks='outside', range=[-b * UF_Dimensions / 2, b * UF_Dimensions / 2], side='bottom'),
+        yaxis=dict(scaleanchor="x", scaleratio=1, range=[0, h * UF_Dimensions], zeroline=True, mirror=True, ticks='outside', side='left'),
         xaxis2=dict(overlaying='x', side='top', ticks='outside', mirror=True),
         yaxis2=dict(overlaying='y', side='right', ticks='outside', mirror=True),
         showlegend=False, template='plotly_dark')
@@ -1001,25 +1056,29 @@ def draw_capasity_contour():
 
     fig = go.Figure()
 
-    q, m = [], []
-    for i in np.linspace(0, Q_ult, 100):
-        q.append(i)
-        m.append(min((1.25 - i / Q_ult) * M_ult, M_ult))
-    q.append(Q_ult)
-    m.append(0.0)
+    points = [
+        [(0, M_ult),
+         (0.25 * Q_ult, M_ult),
+         (Q_ult, 0.25 * M_ult),
+         (Q_ult, 0)]]
 
-    fig.add_trace(go.Scatter(x=q, y=m,
-        mode='lines', line=dict(color = 'deepskyblue', width=2),
-        fill='tozerox', fillcolor='rgba(0,191,255,0.2)', name='Capacity Line'))
+    for point in points:
+        x = [p[0] * UF_Forces / UD_Forces.get('кН',0) for p in point]
+        y = [p[1] * UF_Moments / UD_Moments.get('кН·м', 0) for p in point]
         
-    color_i = 'lime' if (M_ed/M_ult + Q_ed/Q_ult <= 1.25) and (M_ed/M_ult <= 1) and (Q_ed/Q_ult <= 1) else 'red'
-    fig.add_trace(go.Scatter(x=[Q_ed], y=[M_ed],
+        # Основной сегмент
+        fig.add_trace(go.Scatter(x=x, y=y,
+            mode='lines', line=dict(color='deepskyblue', width=2),
+            fill='tozerox', fillcolor='rgba(0,191,255,0.2)', name='Capacity Line'))
+
+    color_i = 'lime' if ((M_ed/M_ult) + (Q_ed/Q_ult) <= 1.25) and (M_ed/M_ult <= 1) and (Q_ed/Q_ult <= 1) else 'red'
+    fig.add_trace(go.Scatter(x=[Q_ed * UF_Forces / UD_Forces.get('кН',0)], y=[M_ed * UF_Moments / UD_Moments.get('кН·м', 0)],
         mode='markers', marker=dict(color=color_i, size=7.5),
         showlegend=False, name = 'def='+f'{F_ed:.2f} мм')) 
 
     fig.update_layout(
-        xaxis=dict(title='Момент x-x', showgrid=True, range=[0, 1.05 * Q_ult]),
-        yaxis=dict(title='Поперечная сила',showgrid=True, range=[0, 1.05 * M_ult]),
+        xaxis=dict(title='Поперечная сила', showgrid=True, range=[0.0, 1.05 * Q_ult * UF_Forces / UD_Forces.get('кН',0)]),
+        yaxis=dict(title='Момент x-x', showgrid=True, range=[0.0, 1.05 * M_ult * UF_Moments / UD_Moments.get('кН·м', 0)]),
         showlegend=False, height = 1000, template='plotly_dark')
 
     return fig
@@ -1031,13 +1090,15 @@ with col_l:
     st.plotly_chart(draw_section())
 
     st.subheader('Геометрические характеристики полного сечения', divider = 'gray')
-    st.latex('t_{cor}='+f'{t*1e3:.4f}' +'\; mm ' + '\;\;\;\;'+'I_{x.ini}='+f'{I_ini*1e8:.2f}' +'\; cm^4 ')
-    st.latex('W_{x.ini.wf}='+f'{W_ini_wf*1e6:.2f}' +'\; cm^3 ' + '\;\;\;\;' + 'W_{x.ini.tf}='+f'{W_ini_tf*1e6:.2f}' +'\; cm^3 ')
+    st.latex('t_{cor}='+f'{t * UF_Dimensions:.4f}' +'\;' + '\;\;\;\;'+'I_{x.ini}='+f'{I_ini * UF_SectionProperties**4:.2f}')
+    st.latex('W_{x.ini.wf}='+f'{W_ini_wf * UF_SectionProperties**3:.2f}' +'\;' + '\;\;\;\;' + 'W_{x.ini.tf}='+f'{W_ini_tf * UF_SectionProperties**3:.2f}')
     
     st.subheader('Геометрические характеристики редуцированного сечения', divider = 'gray')       
-    st.latex('t_{red.f}='+f'{t_red_f*1e3:.4f}' +'\; mm ' + '\;\;\;\;' + 't_{red.w}='+f'{t_red_w*1e3:.4f}' +'\; mm ' + '\;\;\;\;' + 'I_{x.red}='+f'{I_red*1e8:.2f}' +'\; cm^4 ')
-    st.latex('W_{x.red.wf}='+f'{W_red_wf*1e6:.2f}' +'\; cm^3 ' + '\;\;\;\;' + 'W_{x.red.wf}='+f'{W_red_tf*1e6:.2f}' +'\; cm^3 ')
-    st.latex('M_{ult}='+f'{min(M_ult_wf, M_ult_tf):.2f}' + '\; kNm' + '\;\;\;\;' + 'Q_{ult}='+f'{Q_ult:.2f}' + '\; kN')
+    st.latex('t_{red.f}='+f'{t_red_f * UF_Dimensions:.4f}' +'\;' + '\;\;\;\;' + 't_{red.w}='+f'{t_red_w * UF_Dimensions:.4f}' +'\;' + '\;\;\;\;' + 'I_{x.red}='+f'{I_red * UF_SectionProperties**4:.2f}')
+    st.latex('W_{x.red.wf}='+f'{W_red_wf * UF_SectionProperties**3:.2f}' +'\;' + '\;\;\;\;' + 'W_{x.red.wf}='+f'{W_red_tf * UF_SectionProperties**3:.2f}')
+    k_q_output = UF_Forces / UD_Forces.get('кН',0)
+    k_m_output = UF_Moments / UD_Moments.get('кН·м', 0)
+    st.latex('M_{ult}='+f'{min(M_ult_wf, M_ult_tf) * k_m_output:.2f}' + '\;' + '\;\;\;\;' + 'Q_{ult}='+f'{Q_ult * k_q_output:.2f}')
 
 with col_r:
     st.header('Область прочности', divider = 'gray')
