@@ -76,12 +76,12 @@ Decks_STO_57398459_18_2024 = {
 with st.sidebar:
     st.subheader('Нормы')
     code = st.selectbox('Методика расчёта', ['СП 260.1325800.2023','EN 1993-1-3:2005'], index = 0, label_visibility = 'visible', disabled = True) # Выбор норм для расчёта
-    standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = False) #Выбор стандарта на настил
+    standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = True) #Выбор стандарта на настил
     #st.checkbox('Несущую способность по поперечной силе определять по EN 1993-1-3', value=True, label_visibility = 'visible', disabled = False) #Выбор формулы для определения несущей способность при действии поперечной силы
     Q_en = False
 
     st.subheader('Настройки расчёта')
-    with st.expander('Единицы измерения', expanded=False):
+    with st.expander('Единицы измерения и точность', expanded=False):
         U_Dimensions = st.selectbox('Размеры сечений', ['мм', 'см', 'м'], index=0, label_visibility='visible', disabled=False)
         U_SectionProperties = st.selectbox('Свойства сечений',['ммⁿ', 'смⁿ', 'мⁿ'], index=1, label_visibility='visible', disabled=False)
         U_Load_Area = st.selectbox('Нагрузки',['Па', 'кПа', 'кгс/м²', 'тс/м²'], index = 1, label_visibility='visible', disabled=False)
@@ -421,7 +421,7 @@ def effective_section_properties(flange):
                     + 2 * ((s_ef_1 * t**3) / 12 * m.cos(α)**2 + (t * s_ef_1**3) / 12 * m.sin(α)**2 + s_ef_1 * t * (h_ef_c - s_ef_1 * m.sin(α)/2)**2)
                     + 2 * ((b_ps_ef_e * t**3) / 12 + b_ps_ef_e * t * h_ef_c**2)
                     + 2 * ((b_ps_ef_e * t_ef_f**3) / 12 + b_ps_ef_e * t_ef_f * h_ef_c**2)
-                    + 2 * n_wfs * ((s_wfs * t_ef_f**3) / 12 * m.cos(α)**2 + (t_ef_f * s_wfs**3) / 12 * m.sin(α)**2 + s_wfs * t_ef_f * (h_ef_c - h_wfs / 2)**2)
+                    + 2 * n_wfs * ((s_wfs * t_ef_f**3) / 12 * m.cos(γ_wfs)**2 + (t_ef_f * s_wfs**3) / 12 * m.sin(γ_wfs)**2 + s_wfs * t_ef_f * (h_ef_c - h_wfs / 2)**2)
                     + 2 * ((b_pm_ef_e * t_ef_f**3) / 12 + b_pm_ef_e * t_ef_f * h_ef_c**2))* 1/b * (1 - 2 * δ) # Момент инерции эффективного сечения
         elif n_ws == 1:
             I_ef = (2 * n_tfs * ((s_tfs * t**3) / 12 * m.cos(γ_tfs)**2 + (t * s_tfs**3) / 12 * m.sin(γ_tfs)**2 + s_tfs * t * (h - h_ef_c - h_tfs / 2)**2)
@@ -433,7 +433,7 @@ def effective_section_properties(flange):
                     + 2 * ((s_ef_1 * t**3) / 12 * m.cos(α)**2 + (t * s_ef_1**3) / 12 * m.sin(α)**2 + s_ef_1 * t * (h_ef_c - s_ef_1 * m.sin(α)/2)**2)
                     + 2 * ((b_ps_ef_e * t**3) / 12 + b_ps_ef_e * t * h_ef_c**2)
                     + 2 * ((b_ps_ef_e * t_ef_f**3) / 12 + b_ps_ef_e * t_ef_f * h_ef_c**2)
-                    + 2 * n_wfs * ((s_wfs * t_ef_f**3) / 12 * m.cos(α)**2 + (t_ef_f * s_wfs**3) / 12 * m.sin(α)**2 + s_wfs * t_ef_f * (h_ef_c - h_wfs / 2)**2)
+                    + 2 * n_wfs * ((s_wfs * t_ef_f**3) / 12 * m.cos(γ_wfs)**2 + (t_ef_f * s_wfs**3) / 12 * m.sin(γ_wfs)**2 + s_wfs * t_ef_f * (h_ef_c - h_wfs / 2)**2)
                     + 2 * ((b_pm_ef_e * t_ef_f**3) / 12 + b_pm_ef_e * t_ef_f * h_ef_c**2))* 1/b * (1 - 2 * δ) # Момент инерции эффективного сечения
         elif n_ws == 2:
             I_ef = (2 * n_tfs * ((s_tfs * t**3) / 12 * m.cos(γ_tfs)**2 + (t * s_tfs**3) / 12 * m.sin(γ_tfs)**2 + s_tfs * t * (h - h_ef_c - h_tfs / 2)**2)
@@ -448,7 +448,7 @@ def effective_section_properties(flange):
                     + 2 * ((s_ef_1 * t**3) / 12 * m.cos(α)**2 + (t * s_ef_1**3) / 12 * m.sin(α)**2 + s_ef_1 * t * (h_ef_c - s_ef_1 * m.sin(α)/2)**2)
                     + 2 * ((b_ps_ef_e * t**3) / 12 + b_ps_ef_e * t * h_ef_c**2)
                     + 2 * ((b_ps_ef_e * t_ef_f**3) / 12 + b_ps_ef_e * t_ef_f * h_ef_c**2)
-                    + 2 * n_wfs * ((s_wfs * t_ef_f**3) / 12 * m.cos(α)**2 + (t_ef_f * s_wfs**3) / 12 * m.sin(α)**2 + s_wfs * t_ef_f * (h_ef_c - h_wfs / 2)**2)
+                    + 2 * n_wfs * ((s_wfs * t_ef_f**3) / 12 * m.cos(γ_wfs)**2 + (t_ef_f * s_wfs**3) / 12 * m.sin(γ_wfs)**2 + s_wfs * t_ef_f * (h_ef_c - h_wfs / 2)**2)
                     + 2 * ((b_pm_ef_e * t_ef_f**3) / 12 + b_pm_ef_e * t_ef_f * h_ef_c**2))* 1/b * (1 - 2 * δ) # Момент инерции эффективного сечения
 
         # Моменты сопротивления
@@ -521,7 +521,7 @@ def effective_section_properties(flange):
                     h_ws_c = (s_i3 * h_ws + s_s1 * h_ws / 2)/(s_i2 + s_s1 + s_i3) # Положение центра тяжести ребра стенки
                     I_ws = (s_i3 * t**3) / 12 + (s_i3 * t * h_ws_c**2) + (s_i2 * t**3) / 12 + s_i2 * t * (h_ws - h_ws_c)**2 + (s_s1 * t**3)/12 * m.cos(β)**2 + (t * s_s1**3)/12 * m.sin(β)**2 + s_s1 * t * (h_ws/2 - h_ws_c)**2 # Момент инерции ребра стенки
                 elif n_ws == 2:
-                    s_l = s_3 + s_s2 + s_1 + (s_s1 + s_1) / 2 # Размер 1
+                    s_l = s_3 + s_s2 + s_2 + (s_s1 + s_1) / 2 # Размер 1
                     s_e = s_l - s_3 - s_s2 / 2 # Размер 2
                     A_sa_i = (s_i2 + s_s2 + s_i3) * t # Площадь поперечного сечения ребра стенки
                     h_ws_c = (s_i3 * h_ws + s_s2 * h_ws / 2)/(s_i2 + s_s2 + s_i3) # Положение центра тяжести ребра стенки
@@ -582,7 +582,7 @@ def effective_section_properties(flange):
             z = abs(h_ef_c - (h - h_gr_c))
         
         if n_ws == 0:
-            I_ef = (((b_wf_pm / 2 * t**3) / 12 + b_wf_pm / 2 * t * (h - h_ef_c)**2)
+            I_ef = (((b_wf_pm * t**3) / 12 + b_wf_pm * t * (h - h_ef_c)**2)
                 + 2 * n_wfs * ((s_wfs * t**3) / 12 * m.cos(γ_wfs)**2 + (t * s_wfs**3) / 12 * m.sin(γ_wfs)**2 + s_wfs * t * (h - h_ef_c - h_wfs / 2)**2)
                 + 2 * ((b_wf_ps * t**3) / 12 + b_wf_ps * t * (h - h_ef_c)**2)
                 + 2 * ((s_m * t**3) / 12 * m.cos(α)**2 + (t * s_m**3) / 12 * m.sin(α)**2 + s_m * t * (s_m * m.sin(α)/2)**2)
@@ -592,7 +592,7 @@ def effective_section_properties(flange):
                 + 2 * ((b_ps_ef_e * t_ef_f**3) / 12 + b_ps_ef_e * t_ef_f * (h_ef_c)**2)
                 + 2 * n_tfs * ((s_tfs * t_ef_f**3) / 12 * m.cos(γ_tfs)**2 + (t_ef_f * s_tfs**3) / 12 * m.sin(γ_tfs)**2 + s_tfs * t_ef_f * (h_ef_c - h_tfs / 2)**2)) * 1/b * (1 - 2 * δ) # Момент инерции редуцированного сечения
         elif n_ws == 1:
-            I_ef = (((b_wf_pm / 2 * t**3) / 12 + b_wf_pm / 2 * t * (h - h_ef_c)**2)
+            I_ef = (((b_wf_pm * t**3) / 12 + b_wf_pm * t * (h - h_ef_c)**2)
                 + 2 * n_wfs * ((s_wfs * t**3) / 12 * m.cos(γ_wfs)**2 + (t * s_wfs**3) / 12 * m.sin(γ_wfs)**2 + s_wfs * t * (h - h_ef_c - h_wfs / 2)**2)
                 + 2 * ((b_wf_ps * t**3) / 12 + b_wf_ps * t * (h - h_ef_c)**2)
                 + 2 * ((s_m * t**3) / 12 * m.cos(α)**2 + (t * s_m**3) / 12 * m.sin(α)**2 + s_m * t * (s_m * m.sin(α)/2)**2)
@@ -605,7 +605,7 @@ def effective_section_properties(flange):
                 + 2 * ((b_ps_ef_e * t_ef_f**3) / 12 + b_ps_ef_e * t_ef_f * (h_ef_c)**2)
                 + 2 * n_tfs * ((s_tfs * t_ef_f**3) / 12 * m.cos(γ_tfs)**2 + (t_ef_f * s_tfs**3) / 12 * m.sin(γ_tfs)**2 + s_tfs * t_ef_f * (h_ef_c - h_tfs / 2)**2)) * 1/b * (1 - 2 * δ) # Момент инерции редуцированного сечения
         elif n_ws == 2:
-            I_ef = (((b_wf_pm / 2 * t**3) / 12 + b_wf_pm / 2 * t * (h - h_ef_c)**2)
+            I_ef = (((b_wf_pm * t**3) / 12 + b_wf_pm * t * (h - h_ef_c)**2)
                 + 2 * n_wfs * ((s_wfs * t**3) / 12 * m.cos(γ_wfs)**2 + (t * s_wfs**3) / 12 * m.sin(γ_wfs)**2 + s_wfs * t * (h - h_ef_c - h_wfs / 2)**2)
                 + 2 * ((b_wf_ps * t**3) / 12 + b_wf_ps * t * (h - h_ef_c)**2)
                 + 2 * ((s_1 * t**3) / 12 * m.cos(α)**2 + (t * s_1**3) / 12 * m.sin(α)**2 + s_1 * t * (h - h_ef_c - h_1 / 2)**2)
@@ -629,7 +629,11 @@ def effective_section_properties(flange):
               χ_d,
               [t_ef_f, t_ef_w]]
 
-    return result
+#    test=σ_cr_mod
+
+    return result#, test
+
+#st.metric('metric', effective_section_properties('Узкая')[1])
 
 ### ГЕОМЕТРИЧЕСКИЕ ХАРАКТЕРИСТИКИ ###
 if orient == 'Вверх':
