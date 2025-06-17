@@ -1396,13 +1396,13 @@ def draw_section(flange, result):
         # Основной сегмент
         fig.add_trace(go.Scatter(x=x, y=y,
             mode='lines', line=dict(color='blue', width=4),
-            showlegend=(i==0), legendgroup='ini', name = 'ini'))
+            showlegend=(i==0), legendgroup='ini', name = 'Без редукции'))
         
         # Зеркальное отражение
         x_mirror = [-p[0] * UF_Dimensions for p in segment]
         fig.add_trace(go.Scatter(x=x_mirror, y=y,
             mode='lines', line=dict(color='blue', width=4),
-            showlegend=False, legendgroup='ini', name = 'ini'))
+            showlegend=False, legendgroup='ini', name = 'Без редукции'))
 
     # Рисуем редуцированные участки
 
@@ -1412,13 +1412,13 @@ def draw_section(flange, result):
         
         fig.add_trace(go.Scatter(x=x, y=y,
             mode='lines', line=dict(color=reduced_color, width=4 * χ_d),
-            showlegend=(i==0), legendgroup='red', name = 'red'))
+            showlegend=(i==0), legendgroup='red', name = 'Редуцированно'))
         
         # Зеркальное отражение
         x_mirror = [-p[0] * UF_Dimensions for p in segment]
         fig.add_trace(go.Scatter(x=x_mirror, y=y,
             mode='lines', line=dict(color=reduced_color, width=4 * χ_d),
-            showlegend=False, legendgroup='red', name = 'red'))
+            showlegend=False, legendgroup='red', name = 'Редуцированно'))
     
     # Рисуем выключенные участки серым
     for i, segment in enumerate(inactive_segments):
@@ -1427,13 +1427,13 @@ def draw_section(flange, result):
         
         fig.add_trace(go.Scatter(x=x, y=y,
             mode='lines', line=dict(color='gray', width=2, dash='dash'),
-            showlegend=(i==0), legendgroup='off', name = 'off'))
+            showlegend=(i==0), legendgroup='off', name = 'Выключено'))
         
         # Зеркальное отражение
         x_mirror = [-p[0] * UF_Dimensions for p in segment]
         fig.add_trace(go.Scatter(x=x_mirror, y=y,
             mode='lines', line=dict(color='gray', width=2, dash='dash'),
-            showlegend=False, legendgroup='off', name = 'off'))
+            showlegend=False, legendgroup='off', name = 'Выключено'))
 
     if orient == 'Вверх':
         if flange == 'Широкая':
