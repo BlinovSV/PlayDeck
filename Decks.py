@@ -1,5 +1,6 @@
 ### БИБЛИОТЕКИ ###
 import math as m
+import numpy as np
 import streamlit as st
 import plotly.graph_objects as go
 
@@ -76,13 +77,14 @@ Decks_STO_57398459_18_2024 = {
 with st.sidebar:
     st.subheader('Нормы')
     code = st.selectbox('Методика расчёта', ['СП 260.1325800.2023','EN 1993-1-3:2005'], index = 0, label_visibility = 'visible', disabled = True) # Выбор норм для расчёта
-    standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = True) #Выбор стандарта на настил
+    standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = False) #Выбор стандарта на настил
     #st.checkbox('Несущую способность по поперечной силе определять по EN 1993-1-3', value=True, label_visibility = 'visible', disabled = False) #Выбор формулы для определения несущей способность при действии поперечной силы
     Q_en = False
 
     st.subheader('Настройки расчёта')
     with st.expander('Единицы измерения и точность', expanded=False):
-        U_Dimensions = st.selectbox('Размеры сечений', ['мм', 'см', 'м'], index=0, label_visibility='visible', disabled=False)
+        U_Length = st.selectbox('Размеры', ['мм', 'см', 'м'], index=2, label_visibility='visible', disabled=False)
+        U_Dimensions = st.selectbox('Размеры сечений и деформации', ['мм', 'см', 'м'], index=0, label_visibility='visible', disabled=False)
         U_SectionProperties = st.selectbox('Свойства сечений',['ммⁿ', 'смⁿ', 'мⁿ'], index=1, label_visibility='visible', disabled=False)
         U_Load_Area = st.selectbox('Нагрузки',['Па', 'кПа', 'кгс/м²', 'тс/м²'], index = 1, label_visibility='visible', disabled=False)
         U_Force = st.selectbox('Силы',['Н', 'кН', 'кгс', 'тс'], index=1, label_visibility='visible', disabled=False)
@@ -90,6 +92,12 @@ with st.sidebar:
         U_Stress = st.selectbox('Напряжения', ['Па', 'кПа', 'МПа', 'кН/см²', 'кгс/cм²'], index=2, label_visibility='visible', disabled=False)
         
         precision = st.selectbox('Точность', ['0', '0.0', '0.00', '0.000', '0.0000', 'o_O'], index=2, label_visibility='visible', disabled=False)    
+
+    UD_Length = {
+        'мм': 1000.0,
+        'см': 100.0,
+        'м': 1.0}
+    UF_Length = UD_Length.get(U_Length, 0.0) / UD_Length.get('м', 0)
 
     UD_Dimensions = {
         'мм': 1000.0,
@@ -175,9 +183,16 @@ with st.sidebar:
 
     st.header('Расчетная схема')
     number_spans = st.slider('Количество пролётов', min_value=1, max_value=5, value=3)
-    span = st.number_input('Пролёт', min_value=0.0, max_value=12.0, value=3.0, step=0.01)
-    load_uls = st.number_input('Расчётная нагрузка', min_value=0.0 * UF_Load_Area, max_value=10000.0 * UF_Load_Area, value=1000.0 * UF_Load_Area, step=1.0 * UF_Load_Area) * UD_Load_Area.get('кПа',0.0) / UF_Load_Area
+    span = st.number_input('Пролёт', min_value=0.0 * UF_Length, max_value=12.0 * UF_Length, value=3.0 * UF_Length, step=0.01 * UF_Length, format='%.2f') * UD_Length.get('м', 0.0) / UF_Length
+    load_uls = st.number_input('Расчётная кратковременная нагрузка', min_value=0.0 * UF_Load_Area, max_value=10000.0 * UF_Load_Area, value=1000.0 * UF_Load_Area, step=1.0 * UF_Load_Area) * UD_Load_Area.get('кПа',0.0) / UF_Load_Area
     load_sls = st.number_input('Нормативная длительная нагрузка', min_value=0.0 * UF_Load_Area, max_value=10000.0 * UF_Load_Area, value=1000.0 * UF_Load_Area, step=1.0 * UF_Load_Area) * UD_Load_Area.get('кПа',0.0) / UF_Load_Area
+    def_method = st.radio('Предельный прогиб',['Обратная норма', 'Значение'], index=0, label_visibility='visible', disabled=False)
+    if def_method == 'Обратная норма':
+        def_n = st.number_input('Обратная норма прогиба', min_value=120, max_value=300, value=200, step=1, label_visibility='visible', disabled=False)
+    else:
+        def_f = st.number_input('Предельный прогиб', min_value=0.0001* UF_Dimensions, value = 0.003 * UF_Dimensions, label_visibility='visible', disabled=False, format='%.2f') * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Ширина опоры
+    #Height = st.slider('Высота этажа', min_value=0.0, max_value=12.0, value = 3.0, step = 0.1, label_visibility='visible', disabled=False)
+
 
 ### ИСХОДНЫЕ ДАННЫЕ ###
 
@@ -629,11 +644,7 @@ def effective_section_properties(flange):
               χ_d,
               [t_ef_f, t_ef_w]]
 
-#    test=σ_cr_mod
-
-    return result#, test
-
-#st.metric('metric', effective_section_properties('Узкая')[1])
+    return result
 
 ### ГЕОМЕТРИЧЕСКИЕ ХАРАКТЕРИСТИКИ ###
 if orient == 'Вверх':
@@ -1505,6 +1516,16 @@ else:
 I_f = I_gr - σ_gr / σ_f * (I_gr - I_span) # Момент инерции для определения прогибов
 deflection = k_f * load_sls * span**4 / (E_s * I_f) * 1e-3 # Прогиб
 
+# Предельные прогибы
+#f_u_table = [120, 150, 200, 250, 300]
+#Height_table = [1, 3, 6, 12, 24] if Height > 6.0 else [1, 3, 6, 12, 24]
+if def_method == 'Обратная норма':
+    f_u = span / def_n
+elif def_method == 'Значение':
+    f_u = def_f
+    
+#f_u = np.intrep(Height_table, f_u_table, Height)
+
 ### ПРОВЕРКИ ###
 if number_spans == 1:
     U_m = M_uls/M_ult_span
@@ -1512,9 +1533,15 @@ if number_spans == 1:
     U_s = Q_uls/Q_ult
     color_result_s = 'lime' if U_s <= 1 else 'red'
     U = max(U_m, U_s)
+    color_result = 'lime' if U <= 1 else 'red'
 else:
     U = max(Q_uls/Q_ult, M_uls/M_ult_sup, Q_uls / (1.25 * Q_ult) + M_uls / (1.25 * M_ult_sup))
     color_result = 'lime' if U <= 1 else 'red'
+
+if deflection <= f_u:
+    color_result_def = 'lime'
+else: 
+    color_result_def = 'red'
 
 ### Область прочности профилированного настила ###
 def draw_capasity_contour():
@@ -1583,8 +1610,8 @@ with col_l:
         elif 0 < t_ef_w < t:
             st.latex('t_{ef.w}='+f'{t_ef_w * UF_Dimensions:.{precision_value}f}')
         
-        st.latex('I_{ef}='+f'{effective_section_properties(flange)[1][0] * UF_SectionProperties**4:.{precision_value}f}' + '\;'*4 + 'W_{ef.wf}='+f'{effective_section_properties(flange)[1][1] * UF_SectionProperties**3:.2f}' + '\;'*4 + 'W_{ef.tf}='+f'{effective_section_properties(flange)[1][2] * UF_SectionProperties**3:.{precision_value}f}')
-        st.latex('M_{ult}='+f'{M_ult_span * UF_Moments:.{precision_value}f}' + '\;'*4 + 'Q_{ult}='+f'{Q_ult * UF_Forces:.{precision_value}f}')
+        st.latex('I_{ef}='+f'{effective_section_properties(flange)[1][0] * UF_SectionProperties**4:.{precision_value}f}' + '\;'*4 + 'W_{ef.wf}='+f'{effective_section_properties(flange)[1][1] * UF_SectionProperties**3:.{precision_value}f}' + '\;'*4 + 'W_{ef.tf}='+f'{effective_section_properties(flange)[1][2] * UF_SectionProperties**3:.{precision_value}f}')
+        st.latex('M_{ult}='+f'{M_ult_span * UF_Moments:.{precision_value}f}' + '\;'*4 + 'Q_{ult}='+f'{Q_ult * UF_Forces:.{precision_value}f}' + '\;'*4 + 'f_{ult}='+f'{f_u * UF_Dimensions:.{precision_value}f}')
 
         st.subheader('Результаты расчёта', divider='gray')
         st.latex('M='+f'{M_uls * UF_Moments:.{precision_value}f}' + '\;'*4 + 'Q='+f'{Q_uls * UF_Forces:.{precision_value}f}' + '\;'*4 + 'f='+f'{deflection * UF_Dimensions:.{precision_value}f}')
@@ -1620,8 +1647,16 @@ with col_r:
 
     st.markdown(f'''
         <div style="text-align: center;">
-            <span style='color: lime; font-size: 16px;'>
+            <span style='color: {color_result}; font-size: 16px;'>
                 Коэффициент использования по прочности: {U:.2f}
+            </span>
+        </div>
+        ''', unsafe_allow_html=True)
+    
+    st.markdown(f'''
+        <div style="text-align: center;">
+            <span style='color: {color_result_def}; font-size: 16px;'>
+                Коэффициент использования по жесткости: {deflection / f_u:.2f}
             </span>
         </div>
         ''', unsafe_allow_html=True)
