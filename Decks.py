@@ -63,11 +63,11 @@ Decks_STO_57398459_18_2024 = {
     'Н57-750': {'h': 57, 'b': 187.5, 'b_wf': 95, 'b_tf': 44, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 0, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 0, 'h_1': 57, 'h_s1': 0, 'h_2': 0, 'h_s2': 0, 'r': 5, 'r_s': 4, 'n_cor': 4},
     'Н60-845': {'h': 60, 'b': 211.25, 'b_wf': 122, 'b_tf': 50, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 0, 'b_wfs': 16, 'h_wfs': 5, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 0, 'h_1': 60, 'h_s1': 0, 'h_2': 0, 'h_s2': 0, 'r': 5, 'r_s': 4, 'n_cor': 4},
     'Н75-750': {'h': 75, 'b': 187.5, 'b_wf': 92, 'b_tf': 50, 'n_wfs' : 1, 'n_tfs': 0, 'n_ws': 1, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 8, 'h_1': 47.5, 'h_s1': 7.5, 'h_2': 0, 'h_s2':0, 'r': 5, 'r_s': 4, 'n_cor': 4},
-    'Н105-1270': {'h': 105, 'b': 423, 'b_wf': 158, 'b_tf': 52, 'n_wfs' : 2, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 61, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 5, 'h_1': 16, 'h_s1': 8, 'h_2': 57, 'h_s2':8, 'r': 5, 'r_s': 4, 'n_cor': 4},    
+    'Н105-1270': {'h': 105, 'b': 423, 'b_wf': 158, 'b_tf': 52, 'n_wfs' : 2, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 61, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 5, 'h_1': 16, 'h_s1': 8, 'h_2': 57, 'h_s2':8, 'r': 5, 'r_s': 4, 'n_cor': 4},
     'Н114-600': {'h': 114, 'b': 200.0, 'b_wf': 104, 'b_tf': 60, 'n_wfs': 1, 'n_tfs': 1, 'n_ws': 1, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 18, 'h_tfs': 7, 'h_ws': 8, 'h_1': 81, 'h_s1': 7, 'h_2': 0, 'h_s2': 0, 'r': 5, 'r_s': 4, 'n_cor': 3},
     'Н114-750': {'h': 114, 'b': 250.0, 'b_wf': 126, 'b_tf': 80, 'n_wfs': 2, 'n_tfs': 1, 'n_ws': 1, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 42, 'b_tfs': 18, 'h_tfs': 7, 'h_ws': 8, 'h_1': 81, 'h_s1': 7, 'h_2': 0, 'h_s2': 0, 'r': 5, 'r_s': 4, 'n_cor': 3},
-    'Н127-1100': {'h': 127, 'b': 366.7, 'b_wf': 160, 'b_tf': 54, 'n_wfs': 2, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 61, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 5, 'h_1': 19, 'h_s1': 11, 'h_2': 67, 'h_s2': 11, 'r': 5, 'r_s': 4, 'n_cor': 3},  
-    'Н135-1000': {'h': 135, 'b': 333.3, 'b_wf': 160, 'b_tf': 54, 'n_wfs': 2, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 61, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 5, 'h_1': 19.6, 'h_s1': 12.9, 'h_2': 70, 'h_s2': 12.9, 'r': 5, 'r_s': 4, 'n_cor': 3},  
+    'Н127-1100': {'h': 127, 'b': 366.7, 'b_wf': 160, 'b_tf': 54, 'n_wfs': 2, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 61, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 5, 'h_1': 19, 'h_s1': 11, 'h_2': 67, 'h_s2': 11, 'r': 5, 'r_s': 4, 'n_cor': 3},
+    'Н135-1000': {'h': 135, 'b': 333.3, 'b_wf': 160, 'b_tf': 54, 'n_wfs': 2, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 61, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 5, 'h_1': 19.6, 'h_s1': 12.9, 'h_2': 70, 'h_s2': 12.9, 'r': 5, 'r_s': 4, 'n_cor': 3},
     'Н144-960': {'h': 144, 'b': 320.0, 'b_wf': 124.4, 'b_tf': 60.2, 'n_wfs': 2, 'n_tfs': 1, 'n_ws': 2, 'b_wfs': 29, 'h_wfs': 5, 'b_wfs_s': 50, 'b_tfs': 29, 'h_tfs': 5, 'h_ws': 6, 'h_1': 40, 'h_s1': 7.5, 'h_2': 49, 'h_s2': 7.5, 'r': 5, 'r_s': 4, 'n_cor': 3},
     'Н153-900': {'h': 153, 'b': 300.0, 'b_wf': 120.0, 'b_tf': 61.0, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 7, 'h_1': 40, 'h_s1': 9, 'h_2': 63, 'h_s2': 9, 'r': 5, 'r_s': 3.5, 'n_cor': 3},
     'Н157-800': {'h': 157, 'b': 266.7, 'b_wf': 121.0, 'b_tf': 62.0, 'n_wfs': 1, 'n_tfs': 0, 'n_ws': 2, 'b_wfs': 18, 'h_wfs': 7, 'b_wfs_s': 0, 'b_tfs': 0, 'h_tfs': 0, 'h_ws': 8.25, 'h_1': 43, 'h_s1': 7.5, 'h_2': 66, 'h_s2': 7.5, 'r': 5, 'r_s': 3.5, 'n_cor': 3}
@@ -77,20 +77,26 @@ Decks_STO_57398459_18_2024 = {
 with st.sidebar:
     st.subheader('Нормы')
     code = st.selectbox('Методика расчёта', ['СП 260.1325800.2023','EN 1993-1-3:2005'], index = 0, label_visibility = 'visible', disabled = True) # Выбор норм для расчёта
-    standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = False) #Выбор стандарта на настил
+
     #st.checkbox('Несущую способность по поперечной силе определять по EN 1993-1-3', value=True, label_visibility = 'visible', disabled = False) #Выбор формулы для определения несущей способность при действии поперечной силы
     Q_en = False
 
     st.subheader('Настройки расчёта')
     with st.expander('Единицы измерения и точность', expanded=False):
-        U_Length = st.selectbox('Размеры', ['мм', 'см', 'м'], index=2, label_visibility='visible', disabled=False)
-        U_Dimensions = st.selectbox('Размеры сечений и деформации', ['мм', 'см', 'м'], index=0, label_visibility='visible', disabled=False)
-        U_SectionProperties = st.selectbox('Свойства сечений',['ммⁿ', 'смⁿ', 'мⁿ'], index=1, label_visibility='visible', disabled=False)
-        U_Load_Area = st.selectbox('Нагрузки',['Па', 'кПа', 'кгс/м²', 'тс/м²'], index = 1, label_visibility='visible', disabled=False)
-        U_Force = st.selectbox('Силы',['Н', 'кН', 'кгс', 'тс'], index=1, label_visibility='visible', disabled=False)
-        U_Moments = st.selectbox('Моменты', ['Н·мм','Н·см', 'Н·м', 'кН·мм', 'кН·см', 'кН·м', 'кгс·мм', 'кгс·см', 'кгс·м', 'тс·мм','тс·см', 'тс·м'], index=5, label_visibility='visible', disabled=False)
-        U_Stress = st.selectbox('Напряжения', ['Па', 'кПа', 'МПа', 'кН/см²', 'кгс/cм²'], index=2, label_visibility='visible', disabled=False)
-        
+        col_1, col_2, col_3 = st.columns(3)
+        with col_1:
+            U_Length = st.selectbox('Длины', ['мм', 'см', 'м'], index=2, label_visibility='visible', disabled=False)
+            U_Load_Area = st.selectbox('Нагрузки',['Па', 'кПа', 'кгс/м²', 'тс/м²'], index = 1, label_visibility='visible', disabled=False)
+            U_Stress = st.selectbox('Напряжения', ['Па', 'кПа', 'МПа', 'кН/см²', 'кгс/cм²'], index=2, label_visibility='visible', disabled=False)
+
+        with col_2:
+            U_Dimensions = st.selectbox('Размеры сечений', ['мм', 'см', 'м'], index=0, label_visibility='visible', disabled=False)
+            U_Force = st.selectbox('Силы',['Н', 'кН', 'кгс', 'тс'], index=1, label_visibility='visible', disabled=False)
+
+        with col_3:
+            U_SectionProperties = st.selectbox('Свойства сечений',['ммⁿ', 'смⁿ', 'мⁿ'], index=1, label_visibility='visible', disabled=False)
+            U_Moments = st.selectbox('Моменты', ['Н·мм','Н·см', 'Н·м', 'кН·мм', 'кН·см', 'кН·м', 'кгс·мм', 'кгс·см', 'кгс·м', 'тс·мм','тс·см', 'тс·м'], index=5, label_visibility='visible', disabled=False)
+
         precision = st.selectbox('Точность', ['0', '0.0', '0.00', '0.000', '0.0000', 'o_O'], index=2, label_visibility='visible', disabled=False)    
 
     UD_Length = {
@@ -157,42 +163,48 @@ with st.sidebar:
         'o_O': 17}
     precision_value = precision_dict.get(precision,17)
 
-    st.subheader('Профилированный лист') # Заголовок страницы
-    if standard == 'ГОСТ 24045-2016':
-        deck = st.selectbox('Настил', ['Н57-750', 'Н60-845', 'Н75-750','Н114-600', 'Н114-750', 'Н153-850'], index = 2, label_visibility = 'visible', disabled = False) #Настилы по ГОСТ 24045-2016
-    elif standard == 'СТО 57398459-18-2024':
-        deck = st.selectbox('Настил', ['Н57-750','Н60-845','Н75-750','Н105-1270','Н114-600','Н114-750','Н127-1100','Н135-1000','Н144-960','Н153-900','Н157-800'], index = 2, label_visibility = 'visible', disabled = False)
-    
-    grade = int(st.selectbox('Марка стали листа по ГОСТ 14918-2020', ('220', '250', '280', '320', '350', '390', '420', '450'))) # Класс прочности стали
-    t_nom = float(st.slider('Номинальная толщина стенки', min_value=0.00060 * UF_Dimensions, max_value=0.0015 * UF_Dimensions, value=0.00080 * UF_Dimensions, step=0.00005 * UF_Dimensions, format='%.2f')) * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Номинальная толщина стенки
-    t_coat = float(st.slider('Класс покрытия', min_value=60.0, max_value=430.0, value=350.0, step=5.0, format='%f')) * (7/100) / 1000000 # Толщина защитного покрытия
-    orient = st.selectbox('Ориентация широкой полки', ('Вверх','Вниз'),) # Сжатые полки
+    st.subheader('Сечение')
+    with st.expander('Профилированный лист', expanded=True):
+        standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = False) #Выбор стандарта на настил
+        if standard == 'ГОСТ 24045-2016':
+            deck = st.selectbox('Настил', ['Н57-750', 'Н60-845', 'Н75-750','Н114-600', 'Н114-750', 'Н153-850'], index = 2, label_visibility = 'visible', disabled = False) #Настилы по ГОСТ 24045-2016
+        elif standard == 'СТО 57398459-18-2024':
+            deck = st.selectbox('Настил', ['Н57-750','Н60-845','Н75-750','Н105-1270','Н114-600','Н114-750','Н127-1100','Н135-1000','Н144-960','Н153-900','Н157-800'], index = 2, label_visibility = 'visible', disabled = False)
 
-    if Q_en == False:
-        st.subheader('Условия опирания')
-        Q_parameter_1 = st.selectbox('Конструкция опоры и полок', ['Закреплённая на опоре', 'Не закреплённая на опоре'], index = 0, label_visibility = 'visible')
-        Q_parameter_2 = st.selectbox('Опорная реакция или локальная нагрузка', ['На одну полку','На две полки'], index = 0, label_visibility = 'visible')
-        Q_parameter_3 = st.selectbox('Опора', ['Концевая','Промежуточная'], index=1, label_visibility='visible')
-
-        C=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C',0)
-        C_r=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_r',0)
-        C_b=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_b',0)
-        C_h=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_h',0)
-
-    l_a = float(st.slider('Ширина опоры', min_value=0.05 * UF_Dimensions, max_value=0.2 * UF_Dimensions, value=0.1 * UF_Dimensions, step=0.001 * UF_Dimensions, format='%f')) * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Ширина опоры
+        grade = int(st.selectbox('Марка стали листа по ГОСТ 14918-2020', ('220', '250', '280', '320', '350', '390', '420', '450'))) # Класс прочности стали
+        t_nom = float(st.slider('Номинальная толщина стенки', min_value=0.00060 * UF_Dimensions, max_value=0.0015 * UF_Dimensions, value=0.00080 * UF_Dimensions, step=0.00005 * UF_Dimensions, format='%.2f')) * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Номинальная толщина стенки
+        t_coat = float(st.slider('Класс покрытия', min_value=60.0, max_value=430.0, value=350.0, step=5.0, format='%f')) * (7/100) / 1000000 # Толщина защитного покрытия
+        orient = st.selectbox('Ориентация широкой полки', ('Вверх','Вниз'),) # Сжатые полки
 
     st.header('Расчетная схема')
-    number_spans = st.slider('Количество пролётов', min_value=1, max_value=5, value=3)
-    span = st.number_input('Пролёт', min_value=0.0 * UF_Length, max_value=12.0 * UF_Length, value=3.0 * UF_Length, step=0.01 * UF_Length, format='%.2f') * UD_Length.get('м', 0.0) / UF_Length
-    load_uls = st.number_input('Расчётная кратковременная нагрузка', min_value=0.0 * UF_Load_Area, max_value=10000.0 * UF_Load_Area, value=1000.0 * UF_Load_Area, step=1.0 * UF_Load_Area) * UD_Load_Area.get('кПа',0.0) / UF_Load_Area
-    load_sls = st.number_input('Нормативная длительная нагрузка', min_value=0.0 * UF_Load_Area, max_value=10000.0 * UF_Load_Area, value=1000.0 * UF_Load_Area, step=1.0 * UF_Load_Area) * UD_Load_Area.get('кПа',0.0) / UF_Load_Area
-    def_method = st.radio('Предельный прогиб',['Обратная норма', 'Значение'], index=0, label_visibility='visible', disabled=False)
-    if def_method == 'Обратная норма':
-        def_n = st.number_input('Обратная норма прогиба', min_value=120, max_value=300, value=200, step=1, label_visibility='visible', disabled=False)
-    else:
-        def_f = st.number_input('Предельный прогиб', min_value=0.0001* UF_Dimensions, value = 0.003 * UF_Dimensions, label_visibility='visible', disabled=False, format='%.2f') * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Ширина опоры
-    #Height = st.slider('Высота этажа', min_value=0.0, max_value=12.0, value = 3.0, step = 0.1, label_visibility='visible', disabled=False)
+    with st.expander('Равнопролётная свободно опертая балка', expanded=True):
+        number_spans = st.slider('Количество пролётов', min_value=1, max_value=5, value=3)
+        span = st.number_input('Пролёт', min_value=0.0 * UF_Length, max_value=12.0 * UF_Length, value=3.0 * UF_Length, step=0.01 * UF_Length, format='%.2f') * UD_Length.get('м', 0.0) / UF_Length
+        load_uls = st.number_input('Нагрузка для проверки прочности', min_value=0.0 * UF_Load_Area, max_value=10000.0 * UF_Load_Area, value=1000.0 * UF_Load_Area, step=1.0 * UF_Load_Area) * UD_Load_Area.get('кПа',0.0) / UF_Load_Area
 
+    st.subheader('Условия опирания')
+    with st.expander('Опора', expanded=True):
+        if Q_en == False:
+            Q_parameter_1 = st.selectbox('Конструкция опоры и полок', ['Закреплённая на опоре', 'Не закреплённая на опоре'], index = 0, label_visibility = 'visible', help='СП 260.1325800.2023 не уточняет, когда полку следутет считать закреплённой и от чего собственно закрепление. Однако, так как эта методика "заимствована" из ANSI/SDI ASIS S100-2024, то в оригинале текст читается как "Fastened to support" и "Unfastened", что означает примерно "Прикручено к опоре" и "Неприкручено". Кроме того, присутствует примечание, что при шаге креплений более 460 мм, полку следует считать неприкреплённой к опоре')
+            Q_parameter_2 = st.selectbox('Опорная реакция или локальная нагрузка', ['На одну полку','На две полки'], index = 0, label_visibility = 'visible')
+            Q_parameter_3 = st.selectbox('Опора', ['Концевая','Промежуточная'], index=1, label_visibility='visible')
+
+            C=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C',0)
+            C_r=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_r',0)
+            C_b=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_b',0)
+            C_h=C_coef.get(Q_parameter_1,{}).get(Q_parameter_2,{}).get(Q_parameter_3,{}).get('C_h',0)
+
+        l_a = float(st.slider('Ширина опоры', min_value=0.05 * UF_Dimensions, max_value=0.2 * UF_Dimensions, value=0.1 * UF_Dimensions, step=0.001 * UF_Dimensions, format='%f')) * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Ширина опоры
+
+    st.subheader('Дополнительные настройки')
+    with st.expander('Проверка по прогибам', expanded=True):
+        load_sls = st.number_input('Нагрузка для проверки деформаций', min_value=0.0 * UF_Load_Area, max_value=10000.0 * UF_Load_Area, value=1000.0 * UF_Load_Area, step=1.0 * UF_Load_Area) * UD_Load_Area.get('кПа',0.0) / UF_Load_Area
+        def_method = st.radio('Предельный прогиб',['Относительный', 'Абсолютный'], index=0, label_visibility='visible', disabled=False)
+        if def_method == 'Относительный':
+            def_n = st.number_input('Доля пролёта', min_value=120, max_value=300, value=200, step=1, label_visibility='visible', disabled=False)
+        else:
+            def_f = st.number_input('Предельный прогиб', min_value=0.0001* UF_Dimensions, value = 0.003 * UF_Dimensions, label_visibility='visible', disabled=False, format='%.2f') * UD_Dimensions.get('м', 0.0) / UF_Dimensions # Ширина опоры
+        #Height = st.slider('Высота этажа', min_value=0.0, max_value=12.0, value = 3.0, step = 0.1, label_visibility='visible', disabled=False)
 
 ### ИСХОДНЫЕ ДАННЫЕ ###
 
@@ -241,12 +253,13 @@ k_σ, ψ = 4, 1
 ### ВЫЧИСЛЕНИЯ НЕДОСТАЮЩИХ ДАННЫХ О ГЕОМЕТРИИ ПРОФИЛЯ ###
 
 b_w = (b - b_wf - b_tf)/2 # Горизонтальная проекция стенки
+s_w = m.sqrt(b_w**2 + h**2) # Наклонная длина стенки
 h_3 = 0 if n_ws == 0 else (h - h_1 - h_s1) if n_ws == 1 else (h - h_1 - h_s1 - h_2 - h_s2) if n_ws == 2 else None # Вертикальная проекция нижнего участка стенки [м]
 b_wf_ps = (b_wf - b_wfs_s - b_wfs) / 2 if n_wfs == 2 else (b_wf - b_wfs) / 2 # Ширина крайнего плоского участка широкой полки [м]
 b_wf_pm = 0 if (n_wfs == 0 or n_wfs == 1) else (b_wf - n_wfs * (b_wf_ps + b_wfs)) # Ширина среднего плоского участка широкой полки [м]
 b_tf_ps = (b_tf - b_tfs) / 2 if n_tfs == 1 else b_tf / 2 # Ширина крайнего плоского участка узкой полки [м]
 
-α = m.asin((n_ws * h_ws) / (m.sqrt(b_w**2 + h**2))) + m.atan(h / b_w) # Угол наклона стенки к горизонтали [рад.]
+α = m.asin((n_ws * h_ws) / s_w) + m.atan(h / b_w) # Угол наклона стенки к горизонтали [рад.]
 β = 0 if n_ws == 0 else α - m.pi / 2 + m.atan((h_s1 / m.tan(α) + h_ws / m.sin(α)) / h_s1) # Угол ребер стенки [рад.]
 γ_wfs = m.atan(2 * h_wfs / b_wfs) # Угол ребер широкой полки [рад.]
 γ_tfs = 0 if n_tfs == 0 else m.atan(2 * h_tfs / b_tfs) # Угол ребер узкой полки [рад.]
@@ -321,7 +334,7 @@ def effective_section_properties(flange):
     if flange == 'Широкая':
         while abs(z - z_ini) > 0.000001:
             z_ini = z
-            
+
             # Немного геометрии для старта
             h_c = h_gr_c + z # Положение центра тяжести с учётом редукции
             s_n = h_c / m.sin(α) if (n_ws == 0 or n_ws == 1) else (h_c - h_1 - h_s1)/m.sin(α) if n_ws == 2 else None # Длина сжатой зоны среднего участка стенки с учётом редукции
@@ -427,7 +440,7 @@ def effective_section_properties(flange):
                         + s_ef_1 * t * (s_ef_1 * m.sin(α) / 2) + n_wfs * s_wfs * t_ef_f * (h_wfs / 2))
                         /(n_tfs * s_tfs * t + b_tf_ps * t + s_3 * t + s_s2 * t + s_m * t + s_ef_n * t + s_ef_3 * t_ef_w + s_s1 * t_ef_w + s_ef_2 * t_ef_w + s_ef_1 * t + b_ps_ef_e * t + b_ps_ef_e * t_ef_f + n_wfs * s_wfs * t_ef_f + b_pm_ef_e * t_ef_f))
             z = abs(h_ef_c - h_gr_c)
-    
+
         if n_ws == 0:
             I_ef = (2 * n_tfs * ((s_tfs * t**3) / 12 * m.cos(γ_tfs)**2 + (t * s_tfs**3) / 12 * m.sin(γ_tfs)**2 + s_tfs * t * (h - h_ef_c - h_tfs / 2)**2)
                     + 2 * ((b_tf_ps * t**3) / 12 + b_tf_ps * t * (h - h_ef_c)**2)
@@ -542,7 +555,7 @@ def effective_section_properties(flange):
                     h_ws_c = (s_i3 * h_ws + s_s2 * h_ws / 2)/(s_i2 + s_s2 + s_i3) # Положение центра тяжести ребра стенки
                     I_ws = (s_i3 * t**3)/12 + (s_i3 * t * h_ws_c**2) + (s_i2 * t**3)/12 + s_i2 * t * (h_ws - h_ws_c)**2 + (s_s2 * t**3)/12 * m.cos(β)**2 + (t * s_s2**3)/12 * m.sin(β)**2 + s_s2 * t * (h_ws/2 - h_ws_c)**2 # Момент инерции ребра стенки
                 σ_cr_sa = (1.05 * E_s * m.sqrt(I_ws * t**3 * s_l))/(A_sa_i * s_e * (s_l - s_e)) # Критические напряжения потери устойчивости формы сечения стенки
-            
+
             # Учёт взаимного влияние ребер стенки и полки
             if n_tfs == 0:
                 β_s = 0
@@ -556,7 +569,7 @@ def effective_section_properties(flange):
                 elif n_ws == 2:
                     β_s = 1 - (h_3 + h_s2 / 2) / h_c # Коэффициент
                     σ_cr_mod = σ_cr_s / (1 + (β_s * σ_cr_s/σ_cr_sa)**4)**0.25 # Критические напряжения поетри устойчивости
-                    
+
             # Редукция толщин ребер полок и стенок
             if σ_cr_mod == 0:
                 χ_d = 1
@@ -595,7 +608,7 @@ def effective_section_properties(flange):
                             + s_ef_1 * t * (s_ef_1 * m.sin(α)/2) + n_tfs * s_tfs * t_ef_f * (h_tfs / 2))
                         /(b_wf_pm / 2 * t + n_wfs * s_wfs * t + b_wf_ps * t + s_1 * t + s_s1 * t + s_m * t + s_ef_n * t + s_ef_3 * t_ef_w + s_s2 * t_ef_w + s_ef_2 * t_ef_w + s_ef_1 * t + b_ps_ef_e * t + b_ps_ef_e * t_ef_f + n_tfs * s_tfs * t_ef_f)) # Привязка центра тяжести редуцированного сечения
             z = abs(h_ef_c - (h - h_gr_c))
-        
+
         if n_ws == 0:
             I_ef = (((b_wf_pm * t**3) / 12 + b_wf_pm * t * (h - h_ef_c)**2)
                 + 2 * n_wfs * ((s_wfs * t**3) / 12 * m.cos(γ_wfs)**2 + (t * s_wfs**3) / 12 * m.sin(γ_wfs)**2 + s_wfs * t * (h - h_ef_c - h_wfs / 2)**2)
@@ -686,7 +699,7 @@ def capacity_shear():
             e_min = (n_ws * h_ws * m.sqrt(x_w**2 + y_w**2))/m.sqrt(b_w**2 + h**2)
             e_max = h_ws - e_min
             k_a_s = min(1.45 - 0.05 * e_max/t, 0.95 + 35000 * t**2 * e_min/(s_3*b_d**2)) # Коэффициент, учитывающий наличие ребер на стенки
-   
+
     # Несущая способность по поперечной силе
         if Q_en:
             Q_w_p = 0.15 * t**2 * m.sqrt(R_y * E_s * 10**6) * (1 - 0.1 * m.sqrt(r_s/t)) * (0.5 + m.sqrt(0.02*l_a/t)) * (2.4 + (α/(m.pi/2))**2) * k_a_s # Критическая поперечная сила потери устойчивости одной стенки гофра по EN 1993-1-3
@@ -1519,9 +1532,9 @@ deflection = k_f * load_sls * span**4 / (E_s * I_f) * 1e-3 # Прогиб
 # Предельные прогибы
 #f_u_table = [120, 150, 200, 250, 300]
 #Height_table = [1, 3, 6, 12, 24] if Height > 6.0 else [1, 3, 6, 12, 24]
-if def_method == 'Обратная норма':
+if def_method == 'Относительный':
     f_u = span / def_n
-elif def_method == 'Значение':
+elif def_method == 'Абсолютный':
     f_u = def_f
     
 #f_u = np.intrep(Height_table, f_u_table, Height)
@@ -1580,7 +1593,7 @@ def draw_capasity_contour():
         margin=dict(l=0, r=0, t=25, b=0),
         xaxis=dict(title='Поперечная сила', showgrid=True, range=[0.0, 1.05 * Q_ult * UF_Forces], tickformat=f'.{precision_value}f'),
         yaxis=dict(title='Момент x-x', showgrid=True, range=[0.0, 1.05 * M_ult * UF_Moments], tickformat=f'.{precision_value}f'),
-        showlegend=False, height = 1000, template='plotly_dark')
+        showlegend=False, height = 925, template='plotly_dark')
 
     return fig
 
@@ -1609,7 +1622,7 @@ with col_l:
             st.latex('t_{ef.f}='+f'{t_ef_f * UF_Dimensions:.{precision_value}f}')
         elif 0 < t_ef_w < t:
             st.latex('t_{ef.w}='+f'{t_ef_w * UF_Dimensions:.{precision_value}f}')
-        
+
         st.latex('I_{ef}='+f'{effective_section_properties(flange)[1][0] * UF_SectionProperties**4:.{precision_value}f}' + '\;'*4 + 'W_{ef.wf}='+f'{effective_section_properties(flange)[1][1] * UF_SectionProperties**3:.{precision_value}f}' + '\;'*4 + 'W_{ef.tf}='+f'{effective_section_properties(flange)[1][2] * UF_SectionProperties**3:.{precision_value}f}')
         st.latex('M_{ult}='+f'{M_ult_span * UF_Moments:.{precision_value}f}' + '\;'*4 + 'Q_{ult}='+f'{Q_ult * UF_Forces:.{precision_value}f}' + '\;'*4 + 'f_{ult}='+f'{f_u * UF_Dimensions:.{precision_value}f}')
 
@@ -1652,7 +1665,7 @@ with col_r:
             </span>
         </div>
         ''', unsafe_allow_html=True)
-    
+
     st.markdown(f'''
         <div style="text-align: center;">
             <span style='color: {color_result_def}; font-size: 16px;'>
