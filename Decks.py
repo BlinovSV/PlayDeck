@@ -1404,7 +1404,7 @@ def draw_section(flange:str, result:list):
                     [(-b_tf / 2 + b_ps_ef_e,h),
                     (0, h)]]
 
-    reduced_color = 'rgb(' + str(int(255 * (1 - chi_d))) + ',' + str(int(0)) + ',' + str(int(255 * chi_d)) + ')'
+    reduced_color = 'rgb(' + str(int(255 * (1 - chi_d**1.5))) + ',' + str(int(0)) + ',' + str(int(255 * chi_d**1.5)) + ')'
 
     # Рисуем нередуцированные участки
     for i, segment in enumerate(main_points):
