@@ -1623,39 +1623,38 @@ def draw_capasity_contour():
         margin=dict(l=0, r=0, t=25, b=0),
         xaxis=dict(title='Поперечная сила', showgrid=True, range=[0.0, 1.05 * Q_ult * UF_Forces], tickformat=f'.{precision_value}f'),
         yaxis=dict(title='Момент x-x', showgrid=True, range=[0.0, 1.05 * M_ult * UF_Moments], tickformat=f'.{precision_value}f'),
-        showlegend=False, height = 725, template='plotly_dark')
+        showlegend=False, height = 650, template='plotly_dark')
 
     return fig
 
 #Результаты:
 col_l, col_r = st.columns([2, 3])
 with col_l:
-    st.header('Сечение гофры настила', divider = 'gray') # Заголовок страницы
-    tab_span, tab_sup = st.tabs(['В пролете', 'На опоре'])
+    st.header('Гофра настила', divider = 'gray') # Заголовок страницы
+    st.subheader('Полное сечение')    
+    df_sec_prop_gross = pd.DataFrame(
+        {
+            'Характеристика': ['Толщина стали',
+                             'Момент инерции',
+                            'Момент сопротивления широких полок',
+                                'Момент сопротивления узких полок'],
+            'Значение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+        }
+    )
+    st.dataframe(df_sec_prop_gross, hide_index=True)
 
+    st.subheader('Эффективное сечение')
+    tab_span, tab_sup = st.tabs(['В пролете', 'На опоре'])
     with tab_span:
         flange = 'Широкая' if orient == 'Вверх' else 'Узкая' if orient == 'Вниз' else None
         effective_section = effective_section_properties(flange)        
         I_ef, W_ef_wf, W_ef_tf = effective_section[1]
         t_ef_f, t_ef_w = effective_section[3]
         st.plotly_chart(draw_section(flange, effective_section))
-        
-        st.subheader('Полное сечение')
-        df_sec_prop_gross = pd.DataFrame(
-            {
-                'Характеристика': ['Толщина стали',
-                                   'Момент инерции',
-                                   'Момент сопротивления широких полок',
-                                   'Момент сопротивления узких полок'],
-                'Значение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                             f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-                }
-            )
-        st.dataframe(df_sec_prop_gross, hide_index=True)
 
-        st.subheader('Эффективное сечение')
         if 0 < t_ef_f < t and 0 < t_ef_w < t:
             df_sec_prop_eff = pd.DataFrame(
                 {
@@ -1717,22 +1716,6 @@ with col_l:
         t_ef_f, t_ef_w = effective_section[3]
         st.plotly_chart(draw_section(flange, effective_section))
 
-        st.subheader('Полное сечение')
-        df_sec_prop_gross = pd.DataFrame(
-            {
-                'Характеристика': ['Толщина стали',
-                                 'Момент инерции',
-                                'Момент сопротивления широких полок',
-                                    'Момент сопротивления узких полок'],
-                'Значение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                            f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                            f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                            f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-            }
-        )
-        st.dataframe(df_sec_prop_gross, hide_index=True)
-
-        st.subheader('Эффективное сечение')
         if 0 < t_ef_f < t and 0 < t_ef_w < t:
             df_sec_prop_eff = pd.DataFrame(
                 {
@@ -1789,6 +1772,7 @@ with col_l:
 
 with col_r:
     st.header('Результаты расчета', divider = 'gray')
+    st.subheader('Краткая сводка')
     df_results=pd.DataFrame(
         {
             'Величина': ['Изгибающий момент в опасном сечении', 'Поперечная сила в опасном сечении', 'Предельный изгибающий момент', 'Предельная изгиюащая сила'],
@@ -1813,4 +1797,5 @@ with col_r:
                 </div>
                 ''', unsafe_allow_html=True)
     
+    st.subheader('Область прочности')
     st.plotly_chart(draw_capasity_contour(), use_container_width=True)                     
