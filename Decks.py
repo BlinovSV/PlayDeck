@@ -171,7 +171,7 @@ with st.sidebar:
 
     st.subheader('Сечение')
     with st.expander('Профилированный лист', expanded=True):
-        standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = False) #Выбор стандарта на настил
+        standard = st.selectbox('Стандарт на профиль',['ГОСТ 24045-2016', 'СТО 57398459-18-2024'], index = 0, label_visibility = 'visible', disabled = True) #Выбор стандарта на настил
         if standard == 'ГОСТ 24045-2016':
             deck = st.selectbox('Настил', ['Н57-750', 'Н60-845', 'Н75-750','Н114-600', 'Н114-750', 'Н153-850'], index = 2, label_visibility = 'visible', disabled = False) #Настилы по ГОСТ 24045-2016
         elif standard == 'СТО 57398459-18-2024':
@@ -198,7 +198,7 @@ with st.sidebar:
     with st.expander('Опора', expanded=True):
         if Q_en == False:
             Q_parameter_1 = st.selectbox('Конструкция опоры и полок', ['Закреплённая на опоре', 'Не закреплённая на опоре'], index = 0, label_visibility = 'visible', help='СП 260.1325800.2023 не уточняет, когда полку следутет считать закреплённой и от чего собственно закрепление. Однако, так как эта методика "заимствована" из ANSI/SDI ASIS S100-2024, то в оригинале текст читается как "Fastened to support" и "Unfastened", что означает примерно "Прикручено к опоре" и "Неприкручено". Кроме того, присутствует примечание, что при шаге креплений более 460 мм, полку следует считать неприкреплённой к опоре')
-            Q_parameter_2 = st.selectbox('Опорная реакция или локальная нагрузка', ['На одну полку','На две полки'], index = 0, label_visibility = 'visible', disabled=True)
+            Q_parameter_2 = st.selectbox('Опорная реакция или локальная нагрузка', ['На одну полку','На две полки'], index = 0, label_visibility = 'visible', disabled=False)
             support_index = 0 if number_spans == 1 else 1
             Q_parameter_3 = st.selectbox('Опора', ['Концевая','Промежуточная'], index=support_index, label_visibility='visible', disabled=True)
 
@@ -1581,7 +1581,7 @@ def draw_beam():
             margin=dict(l=0, r=0, t=25, b=0),
             xaxis=dict(title='X'),
             yaxis=dict(title='Y'),
-            showlegend=False, height=925, template='plotly_dark'
+            showlegend=False, height=725, template='plotly_dark'
         )
 
     return fig
@@ -1623,30 +1623,14 @@ def draw_capasity_contour():
         margin=dict(l=0, r=0, t=25, b=0),
         xaxis=dict(title='Поперечная сила', showgrid=True, range=[0.0, 1.05 * Q_ult * UF_Forces], tickformat=f'.{precision_value}f'),
         yaxis=dict(title='Момент x-x', showgrid=True, range=[0.0, 1.05 * M_ult * UF_Moments], tickformat=f'.{precision_value}f'),
-        showlegend=False, height = 650, template='plotly_dark')
+        showlegend=False, height = 475, template='plotly_dark')
 
     return fig
 
 #Результаты:
-col_l, col_r = st.columns([2, 3])
+col_l, col_r = st.columns([1,1])
 with col_l:
     st.header('Гофра настила', divider = 'gray') # Заголовок страницы
-    st.subheader('Полное сечение')    
-    df_sec_prop_gross = pd.DataFrame(
-        {
-            'Характеристика': ['Толщина стали',
-                             'Момент инерции',
-                            'Момент сопротивления широких полок',
-                                'Момент сопротивления узких полок'],
-            'Значение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-        }
-    )
-    st.dataframe(df_sec_prop_gross, hide_index=True)
-
-    st.subheader('Эффективное сечение')
     tab_span, tab_sup = st.tabs(['В пролете', 'На опоре'])
     with tab_span:
         flange = 'Широкая' if orient == 'Вверх' else 'Узкая' if orient == 'Вниз' else None
@@ -1655,59 +1639,137 @@ with col_l:
         t_ef_f, t_ef_w = effective_section[3]
         st.plotly_chart(draw_section(flange, effective_section))
 
-        if 0 < t_ef_f < t and 0 < t_ef_w < t:
-            df_sec_prop_eff = pd.DataFrame(
+        tab_result, tab_properties = st.tabs(['Результаты расчета', 'Геометричесике характеристики'])
+        with tab_result:
+            df_results=pd.DataFrame(
                 {
-                    'Характеристика': ['Толщина участка полки с учетом редкуции',
-                                    'Толщина участка стенки с учетом редукции',
-                                    'Момент инерции эффективного сечения',
-                                    'Момент сопротивления широких полок эффективного сечения',
-                                    'Момент сопротивления узких полок эффективного сечения'],
-                    'Значение': [f'{t_ef_f * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                                 f'{t_ef_w * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                                 f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                 f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                 f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    'Величина': ['Изгибающий момент в опасном сечении',
+                                 'Поперечная сила в опасном сечении',
+                                 'Предельный изгибающий момент',
+                                 'Предельная поперечная сила',
+                                 'Коэффициент использования по прочности',
+                                 'Коэффициент использования по жесткости'],
+                    'Значение': [f'{M_uls * UF_Moments:.{precision_value}f}' + ' ' + U_Moments,
+                                 f'{Q_uls * UF_Forces:.{precision_value}f}' + ' ' + U_Forces,
+                                 f'{M_ult_sup * UF_Moments:.{precision_value}f}' + ' ' + U_Moments,
+                                 f'{Q_ult * UF_Forces:.{precision_value}f}' + ' ' + U_Forces,
+                                 f'{U:.2f}',
+                                 f'{deflection / f_u:.2f}'],
                 }
             )
-        elif t_ef_f == 0 and t_ef_w == 0:
-            df_sec_prop_eff = pd.DataFrame(
-                {
-                    'Характеристика': ['Момент инерции эффективного сечения',
-                                    'Момент сопротивления широких полок эффективного сечения',
-                                    'Момент сопротивления узких полок эффективного сечения'],
-                    'Значение': [f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                 f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                 f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-                }
+    
+            df_results_styled = df_results.style.apply(
+                lambda x: ['color: '+color_result if x.name in [4, 5] else '' for _ in x],
+                axis=1
             )
-        elif 0 < t_ef_f < t:
-            df_sec_prop_eff = pd.DataFrame(
-                {
-                    'Характеристика': ['Толщина участка полки с учетом редукции',
-                                       'Момент инерции эффективного сечения',
-                                       'Момент сопротивления широких полок эффективного сечения',
-                                       'Момент сопротивления узких полок эффективного сечения'],
-                    'Значение': [f'{t_ef_f * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                                 f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                 f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                 f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-                }
-            )
-        elif 0 < t_ef_w < t:
-            df_sec_prop_eff = pd.DataFrame(
-                {
-                    'Характеристика': ['Толщина участка стенки с учетом редукции',
-                                       'Момент инерции эффективного сечения',
-                                       'Момент сопротивления широких полок эффективного сечения',
-                                       'Момент сопротивления узких полок эффективного сечения'],
-                    'Значение': [f'{t_ef_w * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                                 f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                 f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                 f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-                }
-            )
-        st.dataframe(df_sec_prop_eff, hide_index=True)
+            st.dataframe(df_results_styled, hide_index=True)
+
+        with tab_properties: 
+            if 0 < t_ef_f < t and 0 < t_ef_w < t:
+                df_sec_prop_eff = pd.DataFrame(
+                    {
+                        'Характеристика': ['Толщина стали',
+                                        'Толщина цинкового покрытия',
+                                        'Толщина участка полки с учетом редкуции',
+                                        'Толщина участка стенки с учетом редукции',
+                                        'Привязка центра тяжести к широким полкам',
+                                        'Момент инерции',
+                                        'Момент сопротивления широких полок',
+                                        'Момент сопротивления узких полок'],
+                        'Полное сечение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(t_nom-t) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        '',
+                                        '',
+                                        f'{(I_gr/W_gr_wf) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                        'Эффективное сечение': ['',
+                                                '',
+                                                f'{t_ef_f * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{t_ef_w * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef/W_ef_wf * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                                f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                                f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    }
+                )
+            elif t_ef_f == 0 and t_ef_w == 0:
+                df_sec_prop_eff = pd.DataFrame(
+                    {
+                        'Характеристика': ['Толщина стали',
+                                        'Толщина цинкового покрытия',
+                                        'Привязка центра тяжести к широким полкам',
+                                        'Момент инерции',
+                                        'Момент сопротивления широких полок',
+                                        'Момент сопротивления узких полок'],
+                        'Полное сечение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(t_nom-t) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(I_gr/W_gr_wf) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                        'Эффективное сечение': ['',
+                                                '',
+                                                f'{I_ef/W_ef_wf * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                                f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                                f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    }
+                )
+            elif 0 < t_ef_f < t:
+                df_sec_prop_eff = pd.DataFrame(
+                    {
+                        'Характеристика': ['Толщина стали',
+                                        'Толщина цинкового покрытия',
+                                        'Толщина участка полки с учетом редкуции',
+                                        'Привязка центра тяжести к широким полкам',
+                                        'Момент инерции',
+                                        'Момент сопротивления широких полок',
+                                        'Момент сопротивления узких полок'],
+                        'Полное сечение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(t_nom-t) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        '',
+                                        f'{(I_gr/W_gr_wf) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                        'Эффективное сечение': ['',
+                                                '',
+                                                f'{t_ef_f * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef/W_ef_wf * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                                f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                                f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    }
+                )
+            elif 0 < t_ef_w < t:
+                df_sec_prop_eff = pd.DataFrame(
+                    {
+                        'Характеристика': ['Толщина стали',
+                                        'Толщина цинкового покрытия',
+                                        'Толщина участка стенки с учетом редукции',
+                                        'Привязка центра тяжести к широким полкам',
+                                        'Момент инерции',
+                                        'Момент сопротивления широких полок',
+                                        'Момент сопротивления узких полок'],
+                        'Полное сечение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(t_nom-t) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        '',
+                                        f'{(I_gr/W_gr_wf) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                        'Эффективное сечение': ['',
+                                                '',
+                                                f'{t_ef_w * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef/W_ef_wf * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                                f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                                f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    }
+                )
+            st.dataframe(df_sec_prop_eff, hide_index=True)
 
     with tab_sup:
         flange = 'Узкая' if orient == 'Вверх' else 'Широкая' if orient == 'Вниз' else None
@@ -1716,86 +1778,138 @@ with col_l:
         t_ef_f, t_ef_w = effective_section[3]
         st.plotly_chart(draw_section(flange, effective_section))
 
-        if 0 < t_ef_f < t and 0 < t_ef_w < t:
-            df_sec_prop_eff = pd.DataFrame(
+        tab_result, tab_properties = st.tabs(['Результаты расчета', 'Геометричесике характеристики'])
+        with tab_result:
+            df_results=pd.DataFrame(
                 {
-                    'Характеристика': ['Толщина участка полки с учетом редкуции',
-                                    'Толщина участка стенки с учетом редукции',
-                                    'Момент инерции эффективного сечения',
-                                    'Момент сопротивления широких полок эффективного сечения',
-                                    'Момент сопротивления узких полок эффективного сечения'],
-                    'Значение': [f'{t_ef_f * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                                 f'{t_ef_w * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                                 f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                 f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                 f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    'Величина': ['Изгибающий момент в опасном сечении',
+                                 'Поперечная сила в опасном сечении',
+                                 'Предельный изгибающий момент',
+                                 'Предельная поперечная сила',
+                                 'Коэффициент использования по прочности',
+                                 'Коэффициент использования по жесткости'],
+                    'Значение': [f'{M_uls * UF_Moments:.{precision_value}f}' + ' ' + U_Moments,
+                                 f'{Q_uls * UF_Forces:.{precision_value}f}' + ' ' + U_Forces,
+                                 f'{M_ult_sup * UF_Moments:.{precision_value}f}' + ' ' + U_Moments,
+                                 f'{Q_ult * UF_Forces:.{precision_value}f}' + ' ' + U_Forces,
+                                 f'{U:.2f}',
+                                 f'{deflection / f_u:.2f}'],
                 }
             )
-        elif t_ef_f == 0 and t_ef_w == 0:
-            df_sec_prop_eff = pd.DataFrame(
-                {
-                    'Характеристика': ['Момент инерции эффективного сечения',
-                                    'Момент сопротивления широких полок эффективного сечения',
-                                    'Момент сопротивления узких полок эффективного сечения'],
-                    'Значение': [f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                 f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                 f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-                }
+    
+            df_results_styled = df_results.style.apply(
+                lambda x: ['color: '+color_result if x.name in [4, 5] else '' for _ in x],
+                axis=1
             )
-        elif 0 < t_ef_f < t:
-            df_sec_prop_eff = pd.DataFrame(
-                {
-                    'Характеристика': ['Толщина участка полки с учетом редукции',
-                                       'Момент инерции эффективного сечения',
-                                       'Момент сопротивления широких полок эффективного сечения',
-                                       'Момент сопротивления узких полок эффективного сечения'],
-                    'Значение': [f'{t_ef_f * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                                 f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                 f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                 f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-                }
-            )
-        elif 0 < t_ef_w < t:
-            df_sec_prop_eff = pd.DataFrame(
-                {
-                    'Характеристика': ['Толщина участка стенки с учетом редукции',
-                                       'Момент инерции эффективного сечения',
-                                       'Момент сопротивления широких полок эффективного сечения',
-                                       'Момент сопротивления узких полок эффективного сечения'],
-                    'Значение': [f'{t_ef_w * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
-                                 f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
-                                 f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
-                                 f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
-                }
-            )
-        st.dataframe(df_sec_prop_eff, hide_index=True)
+            st.dataframe(df_results_styled, hide_index=True)
+
+        with tab_properties: 
+            if 0 < t_ef_f < t and 0 < t_ef_w < t:
+                df_sec_prop_eff = pd.DataFrame(
+                    {
+                        'Характеристика': ['Толщина стали',
+                                        'Толщина цинкового покрытия',
+                                        'Толщина участка полки с учетом редкуции',
+                                        'Толщина участка стенки с учетом редукции',
+                                        'Привязка центра тяжести к широким полкам',
+                                        'Момент инерции',
+                                        'Момент сопротивления широких полок',
+                                        'Момент сопротивления узких полок'],
+                        'Полное сечение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(t_nom-t) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        '',
+                                        '',
+                                        f'{(I_gr/W_gr_wf) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                        'Эффективное сечение': ['',
+                                                '',
+                                                f'{t_ef_f * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{t_ef_w * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef/W_ef_wf * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                                f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                                f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    }
+                )
+            elif t_ef_f == 0 and t_ef_w == 0:
+                df_sec_prop_eff = pd.DataFrame(
+                    {
+                        'Характеристика': ['Толщина стали',
+                                        'Толщина цинкового покрытия',
+                                        'Привязка центра тяжести к широким полкам',
+                                        'Момент инерции',
+                                        'Момент сопротивления широких полок',
+                                        'Момент сопротивления узких полок'],
+                        'Полное сечение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(t_nom-t) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(I_gr/W_gr_wf) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                        'Эффективное сечение': ['',
+                                                '',
+                                                f'{I_ef/W_ef_wf * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                                f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                                f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    }
+                )
+            elif 0 < t_ef_f < t:
+                df_sec_prop_eff = pd.DataFrame(
+                    {
+                        'Характеристика': ['Толщина стали',
+                                        'Толщина цинкового покрытия',
+                                        'Толщина участка полки с учетом редкуции',
+                                        'Привязка центра тяжести к широким полкам',
+                                        'Момент инерции',
+                                        'Момент сопротивления широких полок',
+                                        'Момент сопротивления узких полок'],
+                        'Полное сечение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(t_nom-t) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        '',
+                                        f'{(I_gr/W_gr_wf) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                        'Эффективное сечение': ['',
+                                                '',
+                                                f'{t_ef_f * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef/W_ef_wf * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                                f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                                f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    }
+                )
+            elif 0 < t_ef_w < t:
+                df_sec_prop_eff = pd.DataFrame(
+                    {
+                        'Характеристика': ['Толщина стали',
+                                        'Толщина цинкового покрытия',
+                                        'Толщина участка стенки с учетом редукции',
+                                        'Привязка центра тяжести к широким полкам',
+                                        'Момент инерции',
+                                        'Момент сопротивления широких полок',
+                                        'Момент сопротивления узких полок'],
+                        'Полное сечение': [f'{t * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{(t_nom-t) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        '',
+                                        f'{(I_gr/W_gr_wf) * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                        f'{I_gr * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                        f'{W_gr_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                        f'{W_gr_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                        'Эффективное сечение': ['',
+                                                '',
+                                                f'{t_ef_w * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef/W_ef_wf * UF_Dimensions:.{precision_value}f}' + ' ' + U_Dimensions,
+                                                f'{I_ef * UF_SectionProperties**4:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','⁴'),
+                                                f'{W_ef_wf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³'),
+                                                f'{W_ef_tf * UF_SectionProperties**3:.{precision_value}f}' + ' ' + U_SectionProperties.replace('ⁿ','³')],
+                    }
+                )
+            st.dataframe(df_sec_prop_eff, hide_index=True)
 
 with col_r:
-    st.header('Результаты расчета', divider = 'gray')
-    st.subheader('Краткая сводка')
-    df_results=pd.DataFrame(
-        {
-            'Величина': ['Изгибающий момент в опасном сечении', 'Поперечная сила в опасном сечении', 'Предельный изгибающий момент', 'Предельная изгиюащая сила'],
-            'Значение': [f'{M_uls * UF_Moments:.{precision_value}f}' + ' ' + U_Moments, f'{Q_uls * UF_Forces:.{precision_value}f}' + ' ' + U_Forces, f'{M_ult_sup * UF_Moments:.{precision_value}f}' + ' ' + U_Moments, f'{Q_ult * UF_Forces:.{precision_value}f}' + ' ' + U_Forces],
-        }
-    )
-    st.dataframe(df_results, hide_index=True)
-
-    st.markdown(f'''
-                <div style="text-align: center;">
-                    <span style='color: {color_result}; font-size: 16px;'>
-                        Коэффициент использования по прочности: {U:.2f}
-                    </span>
-                </div>
-                ''', unsafe_allow_html=True)
-
-    st.markdown(f'''
-                <div style="text-align: center;">
-                    <span style='color: {color_result_def}; font-size: 16px;'>
-                        Коэффициент использования по жесткости: {deflection / f_u:.2f}
-                    </span>
-                </div>
-                ''', unsafe_allow_html=True)
-    
-    st.subheader('Область прочности')
-    st.plotly_chart(draw_capasity_contour(), use_container_width=True)                     
+    st.header('Область прочности', divider = 'gray')
+    st.plotly_chart(draw_capasity_contour(), use_container_width=True)
